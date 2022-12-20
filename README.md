@@ -51,12 +51,15 @@ All applications are built using Docker. For backend, we use docker image [strap
 2. Go to the directory of the project: `cd learn4life-workshop`
 3. Create your own branch: `git checkout -b <your-branch-name>`
 4. Setup backend:
-   4.1 Install dependencies via: `docker-compose run --rm backend npm install`
-   4.2 Start backend server: `docker-compose up backend`
-   4.3 Open Strapi admin account via [admin panel](http://localhost:1337)
+
+- Install dependencies via: `docker-compose run --rm backend npm install`
+- Start backend server: `docker-compose up backend`
+- Open Strapi admin account via [admin panel](http://localhost:1337)
+
 5. Setup Frontend:
-   5.1 Install dependencies via: `docker-compose run --rm frontend npm install`
-   5.2 Start frontend server: `docker-compose up frontend`
-   5.3 Open Web application via [web](http://localhost:8080)
+
+- Install dependencies via: `docker-compose run --rm frontend npm install`
+- Start frontend server: `docker-compose up frontend`
+- Open Web application via [web](http://localhost:8080)
 
 Now you should have a running Strapi server hosted on `localhost:1337` and Vue application hosted on `localhost:8080`.
