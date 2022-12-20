@@ -1,45 +1,62 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+# Learn4Life Workshop
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+## Outline
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
-
----
-
-## Edit a file
-
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
-
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+- [Overview](#overview)
+- [Local Setup](#local-setup)
+- [Build a project with WebUI - Framework](#build-a-framework)
+  - [1. Intro](#1-intro)
+  - [2. Setting up the project template locally](#2-setting-up-the-project-template-locally)
+  - [3. Front-End Exercises](#3-front-end-exercises)
+  - [4. Back-End Exercises](#4-back-end-exercises)
+  - [5. Development Process](#5-development-process)
+- [References](#references)
 
 ---
 
-## Create a file
+## Overview
 
-Next, you’ll add a new file to this repository.
+The purpose of this repository is to provide training material and step by step instructions. The workshop will be split in 2 categories (Backend & Frontend) over the course of 2-3 days.
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
-
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
+At the end of the workshop we would have successfully built a web project based on our stack using Strapi and Vue.js.
 
 ---
 
-## Clone a repository
+## Local Setup
 
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
+### Docker
 
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
+[Docker](https://www.docker.com/) choose based on your installed OS.
+_Note: If you use Windows, We recommend that you should install Windows Subsystem for Linux ([WSL](https://learn.microsoft.com/en-us/windows/wsl/install)). This will integrate Docker into WSL automatically. The WSL should be installed after the Docker._
 
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+### IDE
+
+Install an editor of your choice. For this workshop, presenters will be using [Visual Studio Code](https://code.visualstudio.com).
+
+### Chrome Extension
+
+Install Chrome extension [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd).
+
+## Build a Framework
+
+### 1. Intro
+
+All applications are built using Docker. For backend, we use docker image [strapi/strapi](https://hub.docker.com/r/strapi/strapi). For frontend, we use docker image [node:lts-alpine](https://hub.docker.com/_/node) and [vue-cli](https://cli.vuejs.org/guide/installation.html) to install the SPAs (Single Page Applications). A single-page application is a web application or website that interacts with the web browser by dynamically rewriting the current web page with new data from the web server.
+
+- Set of [UI-fort](https://docs.uifort.com/bamburgh-vue-admin-dashboard-bootstrap-vue-pro-docs) Components built in accordance with 4Life design system.
+
+### 2. Setting up the project template locally
+
+1. Clone the repository via HTTPS/SSH (https://bitbucket.org/kmutt-ets/learn4life-workshop.git)
+2. Go to the directory of the project: `cd learn4life-workshop`
+3. Create your own branch: `git checkout -b <your-branch-name>`
+4. Setup backend:
+   4.1 Install dependencies via: `docker-compose run --rm backend npm install`
+   4.2 Start backend server: `docker-compose up backend`
+   4.3 Open Strapi admin account via [admin panel](http://localhost:1337)
+5. Setup Frontend:
+   5.1 Install dependencies via: `docker-compose run --rm frontend npm install`
+   5.2 Start frontend server: `docker-compose up frontend`
+   5.3 Open Web application via [web](http://localhost:8080)
+
+Now you should have a running Strapi server hosted on `localhost:1337` and Vue application hosted on `localhost:8080`.
