@@ -9,7 +9,7 @@
         <b-nav-item
           :to="{ name: 'home' }"
           :active="$_routerMixin_isPage('home')"
-          >Home</b-nav-item
+          >Task 1</b-nav-item
         >
       </b-navbar-nav>
 
