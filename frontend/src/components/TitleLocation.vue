@@ -1,15 +1,24 @@
 <template>
-  <div>Current location: {{ title }}</div>
+  <b-card title="Current Location" class="card__title-location">
+    <b-card-text class="text__title">{{ title }}</b-card-text>
+  </b-card>
 </template>
+s
 
 <script>
 export default {
-  data() {
-    return {
-      title: "CHANGE ME!!!",
-    };
+  computed: {
+    title() {
+      return `${window.location.origin}${this.$route.fullPath}`;
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.card__title-location {
+  .card-title {
+    font-weight: bold;
+  }
+}
+</style>

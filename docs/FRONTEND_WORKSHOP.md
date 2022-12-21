@@ -17,7 +17,7 @@ In this chapter we will tackle how to create various components on the newly set
 
 - Modify the `TitleLocation` component so that it shows the current page location
 - Modify the title data to a computed property
-- Modify the title class style to have fontweight `bold`
+- Modify the card's title style to have font weight `bold`
 - Hint: you can get page location via route object. You can check route object properties from [here](https://v3.router.vuejs.org/api/#router-forward)
 
 ## Add a new page: about
