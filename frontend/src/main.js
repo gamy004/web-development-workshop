@@ -1,5 +1,6 @@
-import BootstrapVue from "bootstrap-vue";
 import Vue from "vue";
+import BootstrapVue from "bootstrap-vue";
+import "./icon";
 import store from "./store";
 import router from "./router";
 import App from "./App.vue";

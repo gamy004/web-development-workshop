@@ -21,7 +21,6 @@ const router = new Router({
 
     // route guard redirect to home page, trigger when invalid path has been request for page
     { path: "*", name: "guard", redirect: "/" },
-    // { path: "*", component: () => import("./views/home.vue") },
   ],
 });
 

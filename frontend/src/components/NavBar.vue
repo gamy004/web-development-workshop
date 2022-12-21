@@ -6,14 +6,8 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item
-          :to="{ name: 'home' }"
-          :active="$_routerMixin_isPage('home')"
-          >Task 1</b-nav-item
-        >
+        <!-- For putting link to about page -->
       </b-navbar-nav>
-
-      <!-- For putting link to about page -->
 
       <b-navbar-nav class="ml-auto">
         <!-- For putting go to log in page link -->
