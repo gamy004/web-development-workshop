@@ -2,18 +2,17 @@
 
 In this chapter we will tackle how to create various components on the newly setup project.
 
-- [Workshop: Front-End](#workshop-front-end)
-  - [Title Changes](#title-changes)
-  - [Add a new page: about](#add-a-new-page-about)
-  - [Adding navigation buttons](#add-a-navigation-buttons)
-  - [Automatically display current location](#automatically-display-current-location)
-  - [Adding a new model: User](#adding-a-new-model-user)
-  - [Make use of the new components in `view.js`.](#make-use-of-the-new-components-in-viewjs)
-  - [Adding buttons](#adding-buttons)
-  - [Create a new class file `Home.js`](#create-a-new-class-file-homejs)
-  - [Create an new class file `About.js`](#create-an-new-class-file-aboutjs)
-  - [Build a table in `aboutPage.js`](#build-a-table-in-aboutpagejs)
-  - [Link pages between them](#link-pages-between-them)
+- [Workshop: Front-End](#markdown-header-workshop-front-end)
+  - [Title Changes](#markdown-header-title-changes)
+  - [Add a new page: about](#markdown-header-add-a-new-page-about)
+  - [Adding navigation buttons](#markdown-header-add-a-navigation-buttons)
+  - [Automatically display current location](#markdown-header-automatically-display-current-location)
+  - [Adding a new model: User](#markdown-header-adding-a-new-model-user)
+  - [Adding login form to `home-page.vue` page](#markdown-header-adding-login-form-to-home-pagevue-page)
+  - [Display basic user information to `about-page.vue` page](#markdown-header-display-basic-user-information-to-about-pagevue-page)
+  - [Adding a new model: Role](#markdown-header-adding-a-new-model-role)
+  - [Display user role information to `about-page.vue` page](#markdown-header-display-user-role-information-to-about-pagevue-page)
+  - [Extra Exercise](#markdown-header-extra-exercise)
 
 ## Title Changes
 
