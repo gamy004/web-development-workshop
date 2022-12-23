@@ -5,11 +5,11 @@
 - [Overview](#markdown-header-overview)
 - [Local Setup](#markdown-header-local-setup)
 - [Build a project with WebUI - Framework](#markdown-header-build-a-framework)
-  [1. Intro](#markdown-header-1-intro)
-  [2. Setting up the project template locally](#markdown-header-2-setting-up-the-project-template-locally)
-  [3. Front-End Exercises](#markdown-header-3-front-end-exercises)
-  [4. Back-End Exercises](#markdown-header-4-back-end-exercises)
-  [5. Development Process](#markdown-header-5-development-process)
+  - [1. Intro](#markdown-header-1-intro)
+  - [2. Setting up the project template locally](#markdown-header-2-setting-up-the-project-template-locally)
+  - [3. Front-End Exercises](#markdown-header-3-front-end-exercises)
+  - [4. Back-End Exercises](#markdown-header-4-back-end-exercises)
+  - [5. Development Process](#markdown-header-5-development-process)
 - [References](#markdown-header-references)
 
 ---
