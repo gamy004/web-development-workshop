@@ -4,8 +4,10 @@ In this chapter we will tackle how to create various components on the newly set
 
 - [Workshop: Front-End](#workshop-front-end)
   - [Title Changes](#title-changes)
-  - [Add a new page: home](#add-a-new-page-home)
   - [Add a new page: about](#add-a-new-page-about)
+  - [Adding navigation buttons](#add-a-navigation-buttons)
+  - [Automatically display current location](#automatically-display-current-location)
+  - [Adding a new model: User](#adding-a-new-model-user)
   - [Make use of the new components in `view.js`.](#make-use-of-the-new-components-in-viewjs)
   - [Adding buttons](#adding-buttons)
   - [Create a new class file `Home.js`](#create-a-new-class-file-homejs)
@@ -43,7 +45,7 @@ In this chapter we will tackle how to create various components on the newly set
   - Should use an icon
   - Should print to the console its purpose -->
 
-## Update TitleLocation to automatically display current location
+## Automatically display current location
 
 - Modify the `location` data in `TitleLocation` component to a computed property so that the page location will be updated when page change.
 
@@ -106,6 +108,7 @@ In this chapter we will tackle how to create various components on the newly set
 - Display user's role after user's email and user's username
 - Hint: You can check how to load model's relationshop [here](https://vuex-orm.org/guide/data/retrieving.html#relationships).
 
+# Extra Exercise
 ## Add a new page: todo-list
 
 ## Build a table to display user's todo list
