@@ -2,15 +2,15 @@
 
 ## Outline
 
-- [Overview](#overview)
-- [Local Setup](#local-setup)
-- [Build a project with WebUI - Framework](#build-a-framework)
-  - [1. Intro](#1-intro)
-  - [2. Setting up the project template locally](#2-setting-up-the-project-template-locally)
-  - [3. Front-End Exercises](#3-front-end-exercises)
-  - [4. Back-End Exercises](#4-back-end-exercises)
-  - [5. Development Process](#5-development-process)
-- [References](#references)
+- [Overview](#markdown-header-overview)
+- [Local Setup](#markdown-header-local-setup)
+- [Build a project with WebUI - Framework](#markdown-header-build-a-framework)
+  [1. Intro](#markdown-header-1-intro)
+  [2. Setting up the project template locally](#markdown-header-2-setting-up-the-project-template-locally)
+  [3. Front-End Exercises](#markdown-header-3-front-end-exercises)
+  [4. Back-End Exercises](#markdown-header-4-back-end-exercises)
+  [5. Development Process](#markdown-header-5-development-process)
+- [References](#markdown-header-references)
 
 ---
 
@@ -63,3 +63,9 @@ All applications are built using Docker. For backend, we use docker image [strap
 - Open Web application via [web](http://localhost:8080)
 
 Now you should have a running Strapi server hosted on `localhost:1337` and Vue application hosted on `localhost:8080`.
+
+## 3. [Front-End Exercises](docs/FRONTEND_WORKSHOP.md)
+
+## 4. [Back-End Exercises](docs/BACKEND_WORKSHOP.md)
+
+## 5. [Development Process](docs/DEVELOPMENT_PROCESS.md)
