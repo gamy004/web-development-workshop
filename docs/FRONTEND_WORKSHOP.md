@@ -52,13 +52,13 @@ In this chapter we will tackle how to create various components on the newly set
 - Create a new class `User.js` under `models`.
 - Class should extends a `Model` class from "@vuex-orm/core".
 - Class fields should include
-
-  - id: common attribute [default: null]
-  - username: string [default: ""]
-  - password: string [default: ""]
-  - email: string [default: ""]
-  - confirmed: boolean [default: false]
-
+  ```
+  id: common attribute [default: null]
+  username: string [default: ""]
+  password: string [default: ""]
+  email: string [default: ""]
+  confirmed: boolean [default: false]
+  ```
 - Register `User` model to `VuexORM` database.
 - Hint: VuexORM has been initlaized in `store.js`. You can check how to register model from [here](https://vuex-orm.org/guide/model/database-registration.html#changing-the-namespace).
 
@@ -68,36 +68,46 @@ In this chapter we will tackle how to create various components on the newly set
 - Use `User` model as data to bind with input's value.
 - Add event listener on `submit` event of form to call login API.
 - Add a `POST` method to `/auth/local` which will be logged in user with `identifier` and `password` in `User` model API.
-    request example
-    {
-        "identifier": "example@mail.com",
-        "password": "xxx"
-    }
+  ```
+  request body example
+  {
+    "identifier": "example@mail.com",
+    "password": "xxx"
+  }
+  ```
 - Hint 1: VuexORMAxios has an extension to include API calling in VuexORM model via `Custom Actions`. You can check it [here](https://vuex-orm.github.io/plugin-axios/guide/custom-actions.html#when-to-use-custom-actions).
 - Hint 2: When Strapi response login API, it will include `jwt` field and `user` field. By default, VuexORM will saved response from API into the store. If you want to do something before saving, you can add option `{ save: false }` to prevent default saving process and maunally insert the data or you can use `dataTransformer` to transform the data earlier. You can check it [here](https://vuex-orm.github.io/plugin-axios/guide/usage.html#handling-responses).
 
-## Display user information to `about` page
+## Display basic user information to `about-page.vue` page
 
 - Add a `GET` method to `/uses/me` which will be get a user based on `Authorization` header in `User` model API
 - Call corresponding method in `mounted` hook of `about-page.vue` to automatically get current user data
-- Hint: as `Authroization` header should be added to all of VuexORMAxios instance after the loggedin success, you can use `globalApiConfig` to inject `AUthorization` header to every axios request. You can check it [here](https://vuex-orm.github.io/plugin-axios/api/model.html#globalapiconfig).
 - Display user's email and user's username from given user's id from API, but retreving the data from VuexORM instead of the response from API.
+- Hint: as `Authroization` header should be added to all of VuexORMAxios instance after the loggedin success, you can use `globalApiConfig` to inject `Authorization` header to every axios request. You can check it [here](https://vuex-orm.github.io/plugin-axios/api/model.html#globalapiconfig).
 
-## Create an new class file `About.js`
+## Adding a new model: Role
 
-- Class should have a constructor
-  - Constructor should
-    - initialize super()
-    - an empty JSON variable details in which data will be placed
-    - a requestedTimes variable
-  - Add a method to `getDetails` which will set the JSON variable and increment the requestedTimes variable
+- Create a new class `Role.js` under `models`.
+- Class should extends a `Model` class from "@vuex-orm/core".
+- Class fields should include
+  ```
+  id: common attribute [default: null]
+  name: string [default: ""]
+  description: string [default: ""]
+  type: string [default: ""]
+  ```
+- Register `Role` model to `VuexORM` database.
+- Connect relationship `one-to-many` from `Role` model to `User` model and vice versa.
+- Hint: You can check how to connect model's relationship from [here](https://vuex-orm.org/guide/model/relationships.html).
 
-## Build a table in `aboutPage.js`
+## Display user role information to `about-page.vue` page
 
-- The table should be filled with data from the `getDetails` method implemented earlier which is being called by the button with the same purpose
+- Modify retreved the data from VuexORM of corresponding user to included role
+- Display user's role after user's email and user's username
+- Hint: You can check how to load model's relationshop [here](https://vuex-orm.org/guide/data/retrieving.html#relationships).
 
-## Link pages between them
+## Add a new page: todo-list
 
-Make use of [QueryRouter](https://github.com/AliceO2Group/WebUi/blob/dev/Framework/docs/guide/front-router.md)
+## Build a table to display user's todo list
 
-- Add functionality to the 2 buttons (in home and about pages) to take the user from one page to the other
+## Adding ability to create, edit and delete todo list items
