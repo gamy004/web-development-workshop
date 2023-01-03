@@ -7,7 +7,8 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "jwt:secret": "node -e \"console.log(require('crypto').randomBytes(256).toString('base64'));\""
   },
   "devDependencies": {},
   "dependencies": {

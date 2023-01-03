@@ -1,6 +1,6 @@
 # Workshop: Front-End
 
-In this chapter we will tackle how to create various components on the newly setup project.
+In this chapter we will tackle how to create various components on the newly setup front-end.
 
 - [Workshop: Front-End](#markdown-header-workshop-front-end)
   - [Title Changes](#markdown-header-title-changes)
@@ -110,6 +110,6 @@ In this chapter we will tackle how to create various components on the newly set
 # Extra Exercise
 ## Add a new page: todo-list
 
-## Build a table to display user's todo list
-
 ## Adding ability to create, edit and delete todo list items
+
+## Build a table to display user's todo list
