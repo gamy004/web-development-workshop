@@ -17,7 +17,7 @@ class User extends Model {
       login (user){
         return this.post('/auth/local',{identifier:user.email,password:user.password},{
           dataTransformer:(response)=>{
-            localStorage.setItem("jwt",response.data.jwt)
+            // localStorage.setItem("jwt",response.data.jwt)
             return response.data.user
           }
         })
