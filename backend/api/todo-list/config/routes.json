@@ -49,6 +49,14 @@
       }
     },
     {
+      "method": "PUT",
+      "path": "/my/todo-lists/:id",
+      "handler": "todo-list.updateMyTodoList",
+      "config": {
+        "policies": ["isOwner"]
+      }
+    },
+    {
       "method": "DELETE",
       "path": "/todo-lists/:id",
       "handler": "todo-list.delete",

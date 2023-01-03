@@ -72,8 +72,15 @@ In this chapter we will tackle how to create various components on the newly set
   ```
 - Use current `user` in `state` object to create todo list item given the `title` and `description` (description is optional)
 - Validate the request `body` that the given title should be not empty, otherwise return http response as 422 "unprocessable entity" with message "title is required."
+  ```
+  error handling example
+  
+  if (isInvalid) {
+    return ctx.badRequest("Request invalid.");
+  }
+  ```
 - Hint 1: you can extends default behaviour of strapi create's controller from their template from [here](https://docs-v3.strapi.io/developer-docs/latest/development/backend-customization.html#controllers).
-- Hint 2: you can throw http error using built-in `strapi.errors` object which is implemented by @hapi/boom. you can check boom errors from [here](https://hapi.dev/module/boom/api/?v=10.0.0#http-4xx-errors).
+- Hint 2: you can return http error using built-in strapi errors which is implemented by @hapi/boom. you can check boom errors from [here](https://hapi.dev/module/boom/api/?v=10.0.0#http-4xx-errors).
 
 ## Create custom controller: update my todo list item
 - Add new route with following configuration to `todo-list-item` api
