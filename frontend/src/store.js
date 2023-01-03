@@ -11,6 +11,7 @@ const database = new VuexORM.Database();
 VuexORM.use(VuexORMAxios, {
   axios: axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,
+    withCredentials: true,
   }),
 });
 
