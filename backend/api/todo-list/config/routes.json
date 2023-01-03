@@ -33,6 +33,14 @@
       }
     },
     {
+      "method": "POST",
+      "path": "/my/todo-lists",
+      "handler": "todo-list.createMyTodoList",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "PUT",
       "path": "/todo-lists/:id",
       "handler": "todo-list.update",
