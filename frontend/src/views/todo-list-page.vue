@@ -17,45 +17,10 @@
     </b-col>
 
     <b-col class="mt-3">
+        <div class="text-right mb-3">
+            <b-button variant="light" pill class="bg-deep-blue" @click="showModal = true">Add new task</b-button>
+        </div>
       <b-list-group>
-        <b-list-group-item>
-          <b-form @submit.prevent="addTask">
-            <h5>Add new Task</h5>
-
-            <b-form-group
-              label="Title"
-              label-for="new-task-title"
-              id="fieldset-new-task-title"
-            >
-              <b-form-input
-                placeholder="title"
-                id="new-task-title"
-                v-model="form.title"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              label="Description (Optional)"
-              label-for="new-task-description"
-              id="fieldset-new-task-description"
-            >
-              <b-form-textarea
-                placeholder="description"
-                id="new-task-description"
-                v-model="form.description"
-              ></b-form-textarea>
-            </b-form-group>
-
-            <b-button
-              variant="light"
-              type="submit"
-              class="bg-deep-blue font-weight-bold"
-              >Add</b-button
-            >
-          </b-form>
-        </b-list-group-item>
-
         <b-list-group-item
           v-for="userTask in userTasks"
           :key="`task-${userTask.id}`"
@@ -92,6 +57,37 @@
           </div>
         </b-list-group-item>
       </b-list-group>
+
+      <b-modal v-model="showModal" @ok="handleOk" @hidden="handleHidden">
+        <b-form @submit.stop.prevent="handleFormSubmit">
+          <h5>Add new Task</h5>
+
+          <b-form-group
+            label="Title"
+            label-for="new-task-title"
+            id="fieldset-new-task-title"
+          >
+            <b-form-input
+              placeholder="title"
+              id="new-task-title"
+              v-model="form.title"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label="Description (Optional)"
+            label-for="new-task-description"
+            id="fieldset-new-task-description"
+          >
+            <b-form-textarea
+              placeholder="description"
+              id="new-task-description"
+              v-model="form.description"
+            ></b-form-textarea>
+          </b-form-group>
+        </b-form>
+      </b-modal>
     </b-col>
   </b-row>
 </template>
@@ -105,6 +101,7 @@ export default {
     return {
       userId: null,
       submitting: false,
+      showModal: false,
       form: {
         title: "",
         description: "",
@@ -123,7 +120,26 @@ export default {
   },
 
   methods: {
-    async addTask() {
+    async handleOk(event) {
+        event.preventDefault();
+
+        await this.handleFormSubmit();
+
+        this.showModal = false;
+    },
+
+    handleHidden() {
+        this.resetForm();
+    },
+
+    resetForm() {
+        this.form = {
+            title: "",
+            description: ""
+        };
+    },
+
+    async handleFormSubmit() {
       try {
         this.submitting = true;
 
