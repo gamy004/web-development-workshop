@@ -39,6 +39,14 @@ module.exports = {
     return sanitizeEntity(entity, { model: strapi.models["todo-list"] });
   },
 
+  async createMyTodoListItemV2(ctx) {
+    const { user } = ctx.state;
+
+    const entity = await strapi.services["todo-list"].createUserTodoListItem(user, { title, description });
+
+    return sanitizeEntity(entity, { model: strapi.models["todo-list"] });
+  },
+
   async updateMyTodoListItem(ctx) {
     const { id } = ctx.params;
     const { title, description = null } = ctx.request.body;

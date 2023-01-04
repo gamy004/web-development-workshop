@@ -7,8 +7,14 @@ In this chapter we will tackle how to create various components on the newly set
   - [Create new user via API](#markdown-header-create-new-user-via-api)
   - [Add a new collection type: Todo List Item](#markdown-header-add-a-new-collection-type-to-do-lis-item)
   - [Set permissions for Todo List Item API](#markdown-header-set-permissions-for-todo-list-item-api)
-  - [Create new user via admin console](#markdown-header-create-new-todo-list-item-via-admin-console)
-  - [Create new user via API](#markdown-header-create-new-todo-list-item-via-api)
+  - [Create new todo list item via admin console](#markdown-header-create-new-todo-list-item-via-admin-console)
+  - [Create new todo list item via API](#markdown-header-create-new-todo-list-item-via-api)
+  - [Create custom controller: create my todo list item](#markdown-header-create-custom-controller-create-my-todo-list-item)
+  - [Create custom controller: find my todo list item](#markdown-header-create-custom-controller-find-my-todo-list-item)
+  - [Create custom controller: update my todo list item](#markdown-header-create-custom-controller-update-my-todo-list-item)
+  - [Create custom controller: delete my todo list item](#markdown-header-create-custom-controller-delete-my-todo-list-item)
+  - [Refactor create my todo list item into service](#markdown-header-refactor-create-my-todo-list-item-into-service)
+  - [Add unit testing](#markdown-header-add-unit-testing)
 
 ## Create new user via admin console
 - Create new entry to `Users` collection
@@ -110,3 +116,39 @@ In this chapter we will tackle how to create various components on the newly set
   handler: "todo-list-item.deleteMyTodoListItem",
   ```
 - Apply previous policy to this route to get ability of checking ownership of todo list item
+
+## Refactor create my todo list item into service
+- Add new route with following configuration to `todo-list-item` api
+  ```
+  method: POST
+  path: "/v2/my/todo-list-items"
+  handler: "todo-list-item.createMyTodoListItemV2",
+  ```
+- Add method `createUserTodoListItem` in `todo-list-item` service under `services`
+- Reuse logic of `createMyTodoListItem` in controllers to implement this method
+- Move validation to service, instead of returning error, use `throw` instead
+
+## Add unit testing
+- Create a new file `todo-list-item.js` under `tests/api`. Use following template to create new unit test file
+  ```
+  describe("service: ...", () => {
+    beforeEach(async () => {
+      //
+    });
+
+    afterAll(async () => {
+      //
+    });
+
+    it("should ...", () => {
+      //
+    });
+  });
+  ```
+- Create test cases following three acceptance criteria
+  - it should create new todo list item of given user
+  - it should create new todo list item of given title and description
+  - it should throw badData error when title is not defined or empty
+- Hint 1: use `beforeEach` and `afterAll` hook to clean data every times!! So that you can make sure that your test case will be absolutely independent from other test cases.
+- Hint 2: You can check assertion API from [here](https://jestjs.io/docs/expect)
+- Hint 3: For assert method should throw error, please check this link for [how to](https://github.com/facebook/jest/issues/3601)
