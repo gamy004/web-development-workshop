@@ -6,5 +6,5 @@ module.exports = async (ctx, next) => {
     return await next();
   }
 
-  ctx.unauthorized(`You're not allowed to update this todo list item!`);
+  ctx.unauthorized(`You're not allowed to update or delete this todo list item!`);
 };

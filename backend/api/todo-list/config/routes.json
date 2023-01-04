@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/my/todo-lists",
+      "handler": "todo-list.findMyTodoListItem",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/todo-lists/count",
       "handler": "todo-list.count",
       "config": {
@@ -35,7 +43,7 @@
     {
       "method": "POST",
       "path": "/my/todo-lists",
-      "handler": "todo-list.createMyTodoList",
+      "handler": "todo-list.createMyTodoListItem",
       "config": {
         "policies": []
       }
@@ -51,7 +59,7 @@
     {
       "method": "PUT",
       "path": "/my/todo-lists/:id",
-      "handler": "todo-list.updateMyTodoList",
+      "handler": "todo-list.updateMyTodoListItem",
       "config": {
         "policies": ["isOwner"]
       }
@@ -62,6 +70,14 @@
       "handler": "todo-list.delete",
       "config": {
         "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/my/todo-lists/:id",
+      "handler": "todo-list.deleteMyTodoListItem",
+      "config": {
+        "policies": ["isOwner"]
       }
     }
   ]

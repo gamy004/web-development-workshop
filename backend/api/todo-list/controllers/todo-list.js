@@ -8,7 +8,21 @@ const { sanitizeEntity } = require('strapi-utils');
  */
 
 module.exports = {
-  async createMyTodoList(ctx) {
+  async findMyTodoListItem(ctx) {
+    const { user } = ctx.state;
+
+    let entities;
+
+    if (ctx.query._q) {
+      entities = await strapi.services["todo-list"].search({ ...ctx.query, user: user.id });
+    } else {
+      entities = await strapi.services["todo-list"].find({ ...ctx.query, user: user.id });
+    }
+
+    return sanitizeEntity(entities, { model: strapi.models["todo-list"] });
+  },
+
+  async createMyTodoListItem(ctx) {
     const { user } = ctx.state;
     const { title, description = null } = ctx.request.body;
 
@@ -25,8 +39,7 @@ module.exports = {
     return sanitizeEntity(entity, { model: strapi.models["todo-list"] });
   },
 
-  async updateMyTodoList(ctx) {
-    const { user } = ctx.state;
+  async updateMyTodoListItem(ctx) {
     const { id } = ctx.params;
     const { title, description = null } = ctx.request.body;
 
@@ -40,5 +53,13 @@ module.exports = {
     });
 
     return sanitizeEntity(entity, { model: strapi.models["todo-list"] });
-  }
+  },
+
+  async deleteMyTodoListItem(ctx) {
+    const { id } = ctx.params;
+
+    const entity = await strapi.services["todo-list"].delete({ id });
+
+    return sanitizeEntity(entity, { model: strapi.models["todo-list"] });
+  },
 };
