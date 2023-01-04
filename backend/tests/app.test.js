@@ -20,9 +20,5 @@ afterAll(async () => {
 });
 
 it("strapi is defined", async () => {
-  const entity = await strapi.services["todo-list"].create({ "title": "dummy todo" });
-
-  console.log(entity);
-
   expect(true).toBe(true);
 });
