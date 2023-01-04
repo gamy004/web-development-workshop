@@ -10,6 +10,11 @@
         <font-awesome-icon icon="home" />
         Home
       </b-button>
+
+      <b-button :to="{ name: 'todoList' }">
+        <font-awesome-icon icon="list" />
+        Todo
+      </b-button>
     </b-col>
 
     <b-col cols="6" class="mt-3">

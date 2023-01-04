@@ -7,8 +7,11 @@ import {
   faHome,
   faInfo,
   faUser,
+  faList,
+  faEdit,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
-library.add([faEye, faEyeSlash, faHome, faInfo, faUser]);
+library.add([faEye, faEyeSlash, faHome, faInfo, faUser, faList, faEdit, faTrash]);

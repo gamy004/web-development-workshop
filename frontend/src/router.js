@@ -29,6 +29,16 @@ const router = new Router({
         ),
     },
 
+    {
+      path: "/todo-list",
+      name: "todoList",
+      component: () =>
+        import(
+          /* webpackChunkName: "page--todo-list" */
+          "./views/todo-list-page.vue"
+        ),
+    },
+
     // route guard redirect to home page, trigger when invalid path has been request for page
     { path: "*", name: "guard", redirect: "/" },
   ],

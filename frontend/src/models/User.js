@@ -1,6 +1,7 @@
-import { Model } from "@vuex-orm/core";
+import BaseModel from "./BaseModel";
+import { Task } from "./Task";
 
-export class User extends Model {
+export class User extends BaseModel {
   static entity = "users";
 
   static fields() {
@@ -10,25 +11,12 @@ export class User extends Model {
       password: this.attr(""),
       email: this.attr(""),
       confirmed: this.boolean(false),
+      tasks: this.hasMany(Task, "user_id")
     };
   }
 
   static get isLoggedIn() {
     return localStorage.getItem("jwt-token") !== null;
-  }
-
-  static get globalApiConfig() {
-    const headers = {};
-
-    const jwtToken = localStorage.getItem("jwt-token");
-
-    if (jwtToken) {
-      headers.Authorization = `Bearer ${jwtToken}`;
-    }
-
-    return {
-      headers,
-    };
   }
 
   static apiConfig = {
