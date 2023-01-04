@@ -7,4 +7,4 @@ import {
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
-library.add([faHome]);
+library.add([faEye, faEyeSlash, faHome, faInfo, faUser]);
