@@ -58,3 +58,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.button__toggle-password {
+  cursor: pointer;
+}
+</style>

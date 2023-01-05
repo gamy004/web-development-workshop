@@ -8,9 +8,15 @@
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi",
+    "test": "NODE_ENV=test ./node_modules/.bin/jest --forceExit --runInBand --cache --detectOpenHandles --coverage=true --verbose=true",
+    "test:watch": "jest --watchAll --forceExit --runInBand --cache --detectOpenHandles --verbose=true",
     "jwt:secret": "node -e \"console.log(require('crypto').randomBytes(256).toString('base64'));\""
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "sqlite3": "^5.0.2",
+    "supertest": "^6.1.6"
+  },
   "dependencies": {
     "strapi": "3.6.8",
     "strapi-admin": "3.6.8",
@@ -34,6 +40,14 @@
   "engines": {
     "node": ">=10.16.0 <=14.x.x",
     "npm": "^6.0.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".tmp",
+      ".cache"
+    ],
+    "testEnvironment": "node"
   },
   "license": "MIT"
 }

@@ -110,6 +110,8 @@ In this chapter we will tackle how to create various components on the newly set
 # Extra Exercise
 ## Add a new page: todo-list
 
-## Adding ability to create, edit and delete todo list items
+## Add ability to create, edit and delete todo list items
 
 ## Build a table to display user's todo list
+
+## Add unit testing to page: todo-list 

@@ -12,6 +12,8 @@ Vue.use(Vuex);
 
 const database = new VuexORM.Database();
 
+database.register(User);
+
 VuexORM.use(VuexORMAxios, {
   axios: axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,
