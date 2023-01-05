@@ -90,8 +90,8 @@
             <b-form-input
               placeholder="title"
               id="new-task-title"
-              v-model="form.title"
-              :state="$v.form.title.$anyError ? false : null"
+              v-model="task.title"
+              :state="$v.task.title.$anyError ? false : null"
             ></b-form-input>
           </b-form-group>
 
@@ -103,7 +103,7 @@
             <b-form-textarea
               placeholder="description"
               id="new-task-description"
-              v-model="form.description"
+              v-model="task.description"
             ></b-form-textarea>
           </b-form-group>
         </b-form>
@@ -146,15 +146,12 @@ export default {
       showDeleteModal: false,
       edittedTaskId: null,
       deletedTaskId: null,
-      form: {
-        title: "",
-        description: "",
-      },
+      task: new Task(),
     };
   },
 
   validations: {
-    form: {
+    task: {
       title: {
         required,
       },
@@ -188,8 +185,8 @@ export default {
 
     handleEdit(task) {
       this.edittedTaskId = task.id;
-      this.$set(this.form, "title", task.title);
-      this.$set(this.form, "description", task.description);
+      this.$set(this.task, "title", task.title);
+      this.$set(this.task, "description", task.description);
       this.showManageModal = true;
     },
 
@@ -211,7 +208,7 @@ export default {
     resetManageForm() {
       this.$v.$reset();
       this.edittedTaskId = null;
-      this.form = {
+      this.task = {
         title: "",
         description: "",
       };
@@ -233,11 +230,11 @@ export default {
         if (this.edittedTaskId) {
           await Task.api().update(
             this.edittedTaskId,
-            this.form.title,
-            this.form.description
+            this.task.title,
+            this.task.description
           );
         } else {
-          await Task.api().create(this.form.title, this.form.description);
+          await Task.api().create(this.task.title, this.task.description);
         }
 
         this.showManageModal = false;
