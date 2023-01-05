@@ -4,6 +4,9 @@ import axios from "axios";
 import VuexORM from "@vuex-orm/core";
 import VuexORMAxios from "@vuex-orm/plugin-axios";
 import User from '@/models/User'
+import Role from '@/models/Role'
+import Task from "./models/Task";
+
 
 Vue.use(Vuex);
 
@@ -19,6 +22,8 @@ VuexORM.use(VuexORMAxios, {
 const vuexORMPlugin = VuexORM.install(database);
 
 database.register(User)
+database.register(Role)
+database.register(Task)
 
 const store = new Vuex.Store({
   plugins: [vuexORMPlugin],

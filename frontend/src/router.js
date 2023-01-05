@@ -27,6 +27,15 @@ const router = new Router({
           "./views/about-page.vue"
         ),
     },
+    {
+      path: "/todo-list",
+      name: "odo-list",
+      component: () =>
+        import(
+          
+          "./views/todo-list.vue"
+        ),
+    },
 
     // route guard redirect to home page, trigger when invalid path has been request for page
     { path: "*", name: "guard", redirect: "/" },

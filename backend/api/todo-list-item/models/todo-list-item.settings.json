@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "todo_list_items",
+  "info": {
+    "name": "Todo List Item",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "todo_list_items"
+    }
+  }
+}
