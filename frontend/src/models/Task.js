@@ -23,6 +23,14 @@ export class Task extends BaseModel {
       async create(title, description = null) {
         return this.post(`/my/todo-lists`, { title, description });
       },
+
+      async update(id, title, description = null) {
+        return this.put(`/my/todo-lists/${id}`, { title, description });
+      },
+
+      async remove(id) {
+        return this.delete(`/my/todo-lists/${id}`, { delete: id });
+      },
     },
   };
 }
