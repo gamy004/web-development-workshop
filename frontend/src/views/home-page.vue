@@ -83,7 +83,13 @@ export default {
 
   methods: {
     async onSubmit() {
-      await User.api().logIn(this.user.email, this.user.password);
+      try {
+        await User.api().logIn(this.user.email, this.user.password);
+
+        this.$router.replace({ name: "about" });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
