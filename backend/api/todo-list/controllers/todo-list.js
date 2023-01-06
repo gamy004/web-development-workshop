@@ -42,7 +42,7 @@ module.exports = {
   async createMyTodoListItemV2(ctx) {
     const { user } = ctx.state;
 
-    const entity = await strapi.services["todo-list"].createUserTodoListItem(user, { title, description });
+    const entity = await strapi.services["todo-list"].createUserTodoListItem(user, ctx.request.body);
 
     return sanitizeEntity(entity, { model: strapi.models["todo-list"] });
   },

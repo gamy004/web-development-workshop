@@ -51,7 +51,7 @@
     {
       "method": "POST",
       "path": "/v2/my/todo-lists",
-      "handler": "todo-list.createMyTodoListItem",
+      "handler": "todo-list.createMyTodoListItemV2",
       "config": {
         "policies": []
       }
