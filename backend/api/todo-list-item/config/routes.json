@@ -47,6 +47,43 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "POST",
+      "path": "/my/todo-list-items",
+      "handler": "todo-list-item.createMyTodoListItem",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/my/todo-list-items",
+      "handler": "todo-list-item.findMyTodoListItem",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "put",
+      "path": "/my/todo-list-items",
+      "handler": "todo-list-item.updateMyTodoListItem",
+      "config": {
+        "policies": [
+          "is-owner",
+          "is-valid-body"
+        ]
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/my/todo-list-items/:id",
+      "handler": "todo-list-item.deleteMyTodoListItem",
+      "config": {
+        "policies": [
+          "is-owner"
+        ]
+      }
     }
   ]
 }

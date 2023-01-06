@@ -19,3 +19,6 @@ afterAll(async () => {
 it("strapi is defined", () => {
   expect(true).toBe(true);
 });
+
+require("./api/todo-list-item/services/todo-list-item.js")
+require("./api/todo-list-item/controllers/todo-list-item.js")
