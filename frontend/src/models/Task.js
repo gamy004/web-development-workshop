@@ -2,7 +2,7 @@ import BaseModel from "./BaseModel";
 import User from "./User";
 
 export class Task extends BaseModel {
-  static entity = "Tasks";
+  static entity = "tasks";
 
   static fields() {
     return {

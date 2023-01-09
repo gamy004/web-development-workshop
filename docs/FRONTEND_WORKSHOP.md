@@ -35,6 +35,7 @@ In this chapter we will tackle how to create various components on the newly set
   - Hint: icons can be added via `icon.js`. You can check avialable icons from [here](https://fontawesome.com/search). (Most of icons are in categories `solid` and `regular`).
 
 - Add a button in the `about-page.vue` page which purpose will be to take the user to `home-page.vue` page:
+
   - This should have title "Home".
   - Should use an icon `faHome`.
 
@@ -108,10 +109,21 @@ In this chapter we will tackle how to create various components on the newly set
 - Hint: You can check how to load model's relationshop [here](https://vuex-orm.org/guide/data/retrieving.html#relationships).
 
 # Extra Exercise
+
 ## Add a new page: todo-list
 
 ## Add ability to create, edit and delete todo list items
 
 ## Build a table to display user's todo list
 
-## Add unit testing to page: todo-list 
+## Add unit testing to page: todo-list
+
+- Create test cases following three acceptance criteria
+  - it should display create todo list item task and set data to display modal when click
+  - it should display todo list item of given user with title, description, edit button and delete button
+  - it should display manage modal and set form data when edit todo list item
+  - it should display delete modal and set deleted id of todo list item when delete todo list item
+- Hint 1: check vue test utils command [here](https://v1.test-utils.vuejs.org/api/wrapper)
+- Hint 2: use `beforeEach` hook and jest `cleanAllMocks` function to clean mock for every test cases.
+- Hint 3: use `flushPromises` after mounting component to make sure all asynchonous operations were resolved.
+- Hint 4: use mockImplementation to mock `api()` method, check how to mock [here](https://jestjs.io/docs/27.x/es6-class-mocks#replacing-the-mock-using-mockimplementation-or-mockimplementationonce)

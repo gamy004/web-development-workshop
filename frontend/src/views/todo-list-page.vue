@@ -1,7 +1,7 @@
 <template>
   <b-row id="homePage">
     <b-col cols="12" class="mt-3">
-      <h2 class="d-flex align-items-baseline">
+      <h2 class="d-flex align-items-baseline header__title">
         <font-awesome-icon icon="list" />
         <span class="ml-2">Todo List</span>
       </h2>
@@ -22,14 +22,18 @@
           variant="light"
           pill
           class="bg-deep-blue"
+          ref="button__create-task"
           @click="showManageModal = true"
           >Add task</b-button
         >
       </div>
-      <b-list-group>
+
+      <b-list-group ref="todo__list">
         <b-list-group-item
           v-for="userTask in userTasks"
+          ref="todo__list-item"
           :key="`task-${userTask.id}`"
+          :id="`task-${userTask.id}`"
         >
           <div class="d-flex align-items-center flex-column flex-sm-row">
             <div
@@ -40,16 +44,21 @@
 
             <div class="pl-0 pl-sm-4">
               <div class="d-flex align-items-center">
-                <span class="font-size-lg">{{ userTask.title }}</span>
+                <span class="font-size-lg header__task">{{
+                  userTask.title
+                }}</span>
               </div>
-              <small v-html="userTask.description"></small>
+              <small
+                class="description__task"
+                v-html="userTask.description"
+              ></small>
             </div>
 
             <div class="mt-3 mt-sm-0 ml-sm-auto">
               <b-button
                 variant="light"
                 pill
-                class="mr-2 bg-deep-blue"
+                class="mr-2 bg-deep-blue button__edit-task"
                 @click="handleEdit(userTask)"
               >
                 <span class="btn-wrapper--icon">
@@ -61,7 +70,7 @@
               <b-button
                 variant="light"
                 pill
-                class="bg-heavy-rain"
+                class="bg-heavy-rain button__delete-task"
                 @click="handleDelete(userTask)"
               >
                 <span class="btn-wrapper--icon">
@@ -75,6 +84,7 @@
       </b-list-group>
 
       <b-modal
+        ref="modal__manage-task"
         :title="modalTitle"
         v-model="showManageModal"
         @ok="handleOkManageModal"
@@ -132,7 +142,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import { User } from "../models";
+import { User } from "../models/User";
 import { Task } from "../models/Task";
 
 export default {
@@ -208,10 +218,7 @@ export default {
     resetManageForm() {
       this.$v.$reset();
       this.edittedTaskId = null;
-      this.task = {
-        title: "",
-        description: "",
-      };
+      this.task = new Task();
     },
 
     async handleManageFormSubmit() {
