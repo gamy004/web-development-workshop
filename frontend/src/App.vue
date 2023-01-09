@@ -5,7 +5,7 @@
     <b-container fluid>
       <b-row id="homePage" align-h="center" align-v="center">
         <b-col>
-          <b-card title="Welcome to Learn4Life Workshop!!">
+          <b-card ref="card__welcome" title="Welcome to Learn4Life Workshop!!">
             <b-card-text>
               The purpose of this repository is to provide training material and
               step by step instructions. The workshop will be split in 2
