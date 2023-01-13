@@ -1,11 +1,12 @@
 jest.mock("@/models/User");
 jest.mock("@/models/Task");
 import flushPromises from "flush-promises";
-import { shallowMount } from "@vue/test-utils";
+import { mount, shallowMount } from "@vue/test-utils";
 import { router, localVue } from "../../bootstrap";
 import TodoListPage from "@/views/todo-list-page.vue";
 import { User } from "@/models/User";
 import { Task } from "@/models/Task";
+import { TRUE } from "sass";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -236,5 +237,57 @@ describe("views/todo-list-page.vue", () => {
 
     expect(wrapper.vm.$data.showDeleteModal).toBeTruthy();
     expect(wrapper.vm.$data.deletedTaskId).toBe(1);
+  });
+
+  it("should submit form", async () => {
+    User.api().load.mockImplementation(() => ({
+      response: {
+        data: mockUserData,
+      },
+    }));
+
+    const mockUser = new User(mockUserData);
+
+    Task.api().fetch.mockImplementation(() => ({
+      response: {
+        data: [],
+      },
+    }));
+
+    Task.api().create.mockImplementation(() => ({
+      response: {
+        data: mockTaskData,
+      },
+    }));
+
+    // const mockTasks = mockTaskData.map((data) => new Task(data));
+
+    // mockUser.tasks = mockTasks;
+
+    const wrapper = mount(TodoListPage, {
+      router,
+      localVue,
+      computed: {
+        user() {
+          return mockUser;
+        },
+      },
+    });
+
+    await wrapper.setData({
+      showManageModal: true,
+      task: new Task({
+        title: "test",
+        description: "descrpition",
+      }),
+    });
+
+    await flushPromises();
+
+    const form = wrapper.findComponent({ ref: "form" });
+
+    await form.trigger("submit");
+
+    expect(wrapper.vm.$data.showManageModal).toBeFalsy();
   });
 });

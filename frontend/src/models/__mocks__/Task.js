@@ -1,6 +1,8 @@
 import BaseModel from "./BaseModel";
 
 const fakeFnFetch = jest.fn(() => {});
+const fakeFnCreate = jest.fn(() => {});
+const fakeFnUpdate = jest.fn(() => {});
 
 export class Task extends BaseModel {
   static entity = "tasks";
@@ -14,6 +16,8 @@ export class Task extends BaseModel {
   static api() {
     return {
       fetch: fakeFnFetch,
+      create: fakeFnCreate,
+      update: fakeFnUpdate
     };
   }
 }

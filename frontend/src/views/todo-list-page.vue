@@ -86,11 +86,12 @@
       <b-modal
         ref="modal__manage-task"
         :title="modalTitle"
+        static
         v-model="showManageModal"
         @ok="handleOkManageModal"
         @hidden="handleHiddenManageModal"
       >
-        <b-form @submit.stop.prevent="handleManageFormSubmit">
+        <b-form ref="form" @submit.stop.prevent="handleManageFormSubmit">
           <b-form-group
             label="Title"
             label-for="new-task-title"
@@ -184,6 +185,7 @@ export default {
 
   methods: {
     handleOkManageModal(event) {
+      console.log("handleOkManageModal");
       event.preventDefault();
 
       this.handleManageFormSubmit();
@@ -222,6 +224,7 @@ export default {
     },
 
     async handleManageFormSubmit() {
+      console.log("handleManageFormSubmit", this.showManageModal, this.task.title, this.task.description);
       this.invalid = false;
 
       this.$v.$touch();
@@ -244,6 +247,7 @@ export default {
           await Task.api().create(this.task.title, this.task.description);
         }
 
+        console.log("update showManageModal");
         this.showManageModal = false;
       } catch (error) {
         console.log(error);
