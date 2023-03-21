@@ -7,7 +7,8 @@
           <span class="ml-2">Home</span>
         </h2>
       </b-col>
-      <b-button :to="{ name: 'about' }">About</b-button>
+      <b-button title="About" :to="{ name: 'about' }"><font-awesome-icon :icon="['fas', 'info']" />
+        About</b-button>
     </b-row>
   </div>
 </template>

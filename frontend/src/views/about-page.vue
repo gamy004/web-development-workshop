@@ -1,6 +1,7 @@
 <template>
     <div>
-        hi this is about page
+        <b-button title="Home" :to="{ name: 'home' }"><font-awesome-icon :icon="['fas', 'home']" />
+            Home</b-button>
     </div>
 </template>
 
@@ -8,4 +9,4 @@
 
 </script>
 
-<style lang="css" scoped></style>
+<style lang="scss" scoped></style>
