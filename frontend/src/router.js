@@ -18,6 +18,11 @@ const router = new Router({
           "./views/home-page.vue"
         ),
     },
+    {
+      path: "/about",
+      name: "about",
+      component: () => import("./views/about-page.vue"),
+    },
 
     // route guard redirect to home page, trigger when invalid path has been request for page
     { path: "*", name: "guard", redirect: "/" },
