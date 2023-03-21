@@ -10,30 +10,9 @@
 </template>
 
 <script>
-import { User } from "../models";
-
 export default {
   data() {
-    return {
-    };
-  },
-
-  computed: {
-    isLoggnedIn() {
-      return User.isLoggedIn;
-    },
-  },
-
-  methods: {
-    async onSubmit() {
-      await User.api().logIn(this.user.email, this.user.password);
-    },
+    return {};
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.button__toggle-password {
-  cursor: pointer;
-}
-</style>
