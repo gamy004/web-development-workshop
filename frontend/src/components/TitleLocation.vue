@@ -8,10 +8,13 @@
 export default {
   data() {
     return {
-      location: window.location
+      // location: window.location
     };
   },
   computed: {
+    location() {
+      return window.location.origin + this.$route.fullPath;
+    }
   }
 };
 </script>
