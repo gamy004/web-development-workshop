@@ -3,18 +3,15 @@
     <b-card-text class="text__title">{{ location }}</b-card-text>
   </b-card>
 </template>
-s
 
 <script>
 export default {
   data() {
     return {
+      location: window.location
     };
   },
   computed: {
-    location() {
-      return `${window.location.origin}${this.$route.fullPath}`
-    }
   }
 };
 </script>
