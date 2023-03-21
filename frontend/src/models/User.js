@@ -14,6 +14,10 @@ export class User extends Model {
   }
 
   static get isLoggedIn() {
+    let example = "make changes";
+
+    console.log(example);
+
     return localStorage.getItem("jwt-token") !== null;
   }
 
