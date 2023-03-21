@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import { Role } from "./Role";
 
 export class User extends Model {
   static entity = "users";
@@ -10,6 +11,8 @@ export class User extends Model {
       password: this.attr(""),
       email: this.attr(""),
       confirmed: this.boolean(false),
+      role_id: this.attr(null),
+      role: this.belongsTo(Role, 'role_id')
     };
   }
 
