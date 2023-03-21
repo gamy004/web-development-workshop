@@ -19,16 +19,6 @@ const router = new Router({
         ),
     },
 
-    {
-      path: "/about",
-      name: "about",
-      component: () =>
-        import(
-          /* webpackChunkName: "page--about" */
-          "./views/about-page.vue"
-        ),
-    },
-
     // route guard redirect to home page, trigger when invalid path has been request for page
     { path: "*", name: "guard", redirect: "/" },
   ],
