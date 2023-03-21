@@ -6,7 +6,7 @@
         <span class="ml-2">About</span>
       </h2>
 
-      <b-button :to="{ name: 'home' }">
+      <b-button title="home" :to="{ name: 'home' }">
         <font-awesome-icon icon="home" />
         Home
       </b-button>
