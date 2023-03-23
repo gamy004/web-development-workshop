@@ -7,9 +7,9 @@ export class Role extends Model {
     static fields() {
         return {
           id: this.attr(null),
-          name: this.attr(""),
-          description: this.attr(""),
-          type: this.attr(""),
+          name: this.string(""),
+          description: this.string(""),
+          type: this.string(""),
           users: this.hasMany(User, 'role_id')
         };
       }

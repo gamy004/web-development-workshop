@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import { User } from "./models";
 
 Vue.use(Router);
 
@@ -21,7 +22,13 @@ const router = new Router({
     {
       path: "/about",
       name: "about",
-      component: () => import("./views/about-page.vue"),
+      meta: {
+        authorized: true
+      },
+      component: () => import(
+        /* webpackChunkName: "page--about" */
+        "./views/about-page.vue"
+      ),
     },
 
     // route guard redirect to home page, trigger when invalid path has been request for page
@@ -32,6 +39,10 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
   // hook that triggered after the router has been mounted current page
   console.log(to, from);
+  if (to.meta.authorized && !User.isLoggedIn()) {
+    return next({ path: "/" })
+  }
+
   return next();
 });
 

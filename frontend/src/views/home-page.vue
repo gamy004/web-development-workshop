@@ -20,6 +20,7 @@
       </b-form-group>
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
+
   </div>
 </template>
 
@@ -29,20 +30,18 @@ export default {
   data() {
     return {
       email: "nampun@mail.com",
-      password: "123456"
+      password: "123456",
     };
   },
   methods: {
     async onSubmit(event) {
       event.preventDefault()
       // let { email, password } = this 
-
+      // let body = {identifier: email, password}
       let body = { identifier: this.email, password: this.password }
-      // let user = new User({ email, password })
-
       await User.login(body)
     },
+  },
 
-  }
 };
 </script>
