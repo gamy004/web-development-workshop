@@ -30,7 +30,17 @@ const router = new Router({
         "./views/about-page.vue"
       ),
     },
-
+    {
+      path: "/todolist",
+      name: "todolist",
+      meta: {
+        authorized: true
+      },
+      component: () => import(
+        /* webpackChunkName: "page--about" */
+        "./views/todolist-page.vue"
+      ),
+    },
     // route guard redirect to home page, trigger when invalid path has been request for page
     { path: "*", name: "guard", redirect: "/" },
   ],

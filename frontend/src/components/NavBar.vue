@@ -12,6 +12,8 @@
       <b-navbar-nav class="ml-auto">
         <!-- For putting go to log in page link -->
       </b-navbar-nav>
+
+      {{ $_routerMixin_isPage('test') ? 'YES' : 'NO' }}
     </b-collapse>
   </b-navbar>
 </template>

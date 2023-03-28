@@ -1,5 +1,6 @@
 import { Model } from '@vuex-orm/core'
 import Role from "./Role"
+import TodoList from './TodoList';
 
 export class User extends Model {
   static entity = 'users'
@@ -12,7 +13,9 @@ export class User extends Model {
       email: this.string(""),
       confirmed: this.boolean(false),
       role_id: this.attr(null),
-      role: this.belongsTo(Role, 'role_id')
+      role: this.belongsTo(Role, 'role_id'),
+      todolist_id: this.attr(null),
+      todolist: this.hasMany(TodoList, "todolist_id")
     }
   }
   

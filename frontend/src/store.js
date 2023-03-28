@@ -5,6 +5,7 @@ import VuexORM from "@vuex-orm/core";
 import VuexORMAxios from "@vuex-orm/plugin-axios";
 import { User } from "./models/User";
 import Role from "./models/Role";
+import Todo from "./models/TodoList";
 Vue.use(Vuex);
 
 const database = new VuexORM.Database();
@@ -12,6 +13,7 @@ const database = new VuexORM.Database();
 // Register Models.
 database.register(User)
 database.register(Role)
+database.register(Todo)
 
 VuexORM.use(VuexORMAxios, {
   axios: axios.create({
