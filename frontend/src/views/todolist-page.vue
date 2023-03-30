@@ -52,13 +52,11 @@
 </template>
 
 <script>
-import { todoMixin } from '@/mixins/todoMixin'
 import TodoList from '@/models/TodoList'
 import TodoModal from "../components/TodoModal.vue"
 
 
 export default {
-    mixins: [todoMixin],
     emits: ['update:message'],
     components: {
         TodoModal,
