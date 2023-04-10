@@ -1,19 +1,16 @@
 <template>
     <div>
-        <b-card>
+        <b-card id="aboutPage" class="my-3">
+            <h2 class="d-flex align-items-baseline">
+                <font-awesome-icon icon="info" />
+                <span class="ml-2">About</span>
+            </h2>
 
-            <div>
-                <h2 class="d-flex align-items-baseline">
-                    <font-awesome-icon icon="info" />
-                    <span class="ml-2">About</span>
-                </h2>
-            </div>
-            <div>
-                <b-button title="Home" :to="{ name: 'home' }"><font-awesome-icon :icon="['fas', 'home']" />Home</b-button>
-                <b-button title="TodoList" :to="{ name: 'todolist' }" class="ml-2"><font-awesome-icon
-                        :icon="['fas', 'table-list']" />To
-                    do List</b-button>
-            </div>
+            <b-button title="Home" :to="{ name: 'home' }"><font-awesome-icon :icon="['fas', 'home']"
+                    class="mr-1" />Home</b-button>
+            <b-button title="TodoList" :to="{ name: 'todolist' }" class="ml-2"><font-awesome-icon
+                    :icon="['fas', 'table-list']" class="mr-1" />To
+                do List</b-button>
 
         </b-card>
         <b-card title="User Infomation" class="card__title-location">
@@ -55,7 +52,6 @@ export default {
             res = await User.api().fetchUser();
         } catch (error) {
             console.error(error);
-
             alert("some thing went wrong!!!");
         } finally {
             this.loading = false;

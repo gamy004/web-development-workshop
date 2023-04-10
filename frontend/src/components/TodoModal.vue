@@ -1,22 +1,36 @@
 <template>
-    <b-modal :title="title" hide-footer @hidden="$emit('hidden')" v-model="value">
+    <div>
+        <b-modal id="todo-modal" :title="title" :hide-footer="!isDelete" @hidden="$emit('hidden')" static
+            v-model="showModal">
+            <div v-if="!isDelete">
+                <b-form-group label="Title">
+                    <b-form-input type="text" v-model="displayTitle" />
+                </b-form-group>
+                <b-form-group label="Description">
+                    <b-form-textarea rows="5" max-rows="5" v-model="displayDescription" />
+                </b-form-group>
 
-        <b-row inline>
-            <b-col>
-                <b-form-input type="text" v-model="displayMessage" />
-            </b-col>
-            <b-col cols="3">
-                <b-button v-if="title === 'Add New Task'" :title="title" variant="outline-success" @click="addMessage"
-                    v-model="value">Add </b-button>
-                <b-button v-else-if="title === 'Edit Task'" :title="title" variant="outline-warning" :isShowModal="false"
-                    @click="editMessage()" v-model="value">Edit</b-button>
-            </b-col>
-        </b-row>
 
-    </b-modal>
+                <b-button class="button__edit" v-if="todo.id" :title="title" variant="outline-warning" :isShowModal="false"
+                    @click="onEdit()" block>Edit</b-button>
+
+                <b-button class="button__add" v-else :title="title" variant="outline-success" v-model="showModal" block
+                    @click="onCreate()">Add
+                </b-button>
+            </div>
+            <p class="my-4" v-if="isDelete">Are you sure you want to delete this task?</p>
+            <template #modal-footer="{ cancel }" v-if="isDelete">
+                <b-button type="reset" variant="danger" @click="onDelete()">Yes</b-button>
+                <b-button variant="success" @click="cancel()">No</b-button>
+            </template>
+
+        </b-modal>
+    </div>
 </template>
 
 <script>
+import { todoMixin } from '@/mixins/todoMixin';
+import TodoList from '@/models/TodoList'
 
 export default {
     name: "TodoModal",
@@ -26,54 +40,92 @@ export default {
             default: false
         },
         title: String,
-        message: String
+        todo: {
+            type: TodoList,
+        },
+        deleteItem: Number
     },
+    model: {
+        prop: "todo",
+        event: "change"
+    },
+    mixins: [todoMixin],
     data() {
         return {
-            newMessage: "",
+            // newTitle: "",
+            // newDescription: null,
         }
     },
+    created() {
+
+    },
     computed: {
-        value: {
+        showModal: {
             get() {
                 return this.isShowModal
             },
             set(value) {
-                // console.log("test");
                 this.$emit('update:isShowModal', value)
             }
         },
-        displayMessage: {
+        displayTitle: {
             get() {
-                // console.log("get");
-                return this.message
+                return this.todo ? this.todo["title"] : ""
             },
-            set(value) {
-                // console.log("set", value);
-                this.newMessage = value
+            set(title) {
+                const updatedTodo = new TodoList({ ...this.todo, title });
+
+                this.$emit("change", updatedTodo);
             }
         },
+        displayDescription: {
+            get() {
+                return this.todo ? this.todo["description"] : ""
+            },
+            set(description) {
+                const updatedTodo = new TodoList({ ...this.todo, description });
+
+                this.$emit("change", updatedTodo);
+            }
+        },
+        isDelete() {
+            return this.title === 'Confirm Delete'
+        }
+
 
     },
     methods: {
-        addMessage() {
-            this.$emit('add', this.newMessage)
-            this.newMessage = ""
-        },
-        editMessage() {
-            console.log("message", this.message)
-            console.log("this.newMessage", this.newMessage)
-            this.$emit('EditedItem', this.newMessage)
-        },
 
+        async onEdit() {
+            if (!this.todo.title) {
+                alert("Title is requied");
+
+                return;
+            }
+
+            if (this.todo && this.todo.id) {
+                await this.$_todoMixin_editedUserTask(this.todo);
+            }
+
+            this.$emit("update:success");
+
+        },
+        async onCreate() {
+            if (this.todo.title.trim() === "" || this.todo.title === null) {
+                alert("Title is requied");
+                return;
+            }
+
+            await this.$_todoMixin_createUserTask(this.todo)
+
+            this.$emit("create:success");
+        },
+        onDelete() {
+            this.$_todoMixin_deleteUserTask({ id: this.deleteItem })
+            this.$bvModal.hide("todo-modal")
+            // this.$emit("delelte:success")
+        }
     },
-    // watch: {
-    //     newMessage: {
-    //         handler: function (newMessage) {
-    //             console.log(newMessage);
-    //         }
-    //     }
-    // },
 
 }
 </script>

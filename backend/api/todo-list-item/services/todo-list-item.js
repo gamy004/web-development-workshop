@@ -13,7 +13,7 @@ module.exports = {
             data
         );
     
-        const entry = await strapi.query('todo-list-item').create({ ...validData, user }); //validdata+query+create
+        const entry = await strapi.query('todo-list-item').create({ ...validData, user }, []); //validdata+query+create
     
         return entry;
     }

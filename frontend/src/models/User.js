@@ -27,6 +27,10 @@ export class User extends Model {
     return localStorage.getItem("jwt") !== null;
   }
 
+  static isLoggedOut() {
+    return localStorage.clear();
+  }
+
   static get globalApiConfig() {
     const headers = {};
 
@@ -64,7 +68,6 @@ export class User extends Model {
 
   static async login(body){
     let res = await this.api().login(body)
-    console.log(res);
     await res.save()
   }
 

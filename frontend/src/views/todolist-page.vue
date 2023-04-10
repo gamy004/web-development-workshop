@@ -1,59 +1,51 @@
 <template>
     <div>
-        <b-card id="todolistPage">
-            <div>
-                <h2 class="d-flex align-items-baseline">
-                    <font-awesome-icon icon="table-list" />
-                    <span class="ml-2">To Do List</span>
-                </h2>
-            </div>
-            <div>
-                <b-button title="About" :to="{ name: 'home' }"><font-awesome-icon :icon="['fas', 'home']" />
-                    Home
-                </b-button>
-                <b-button title="About" :to="{ name: 'about' }" class="ml-2"><font-awesome-icon :icon="['fas', 'info']" />
-                    About
-                </b-button>
-            </div>
+        <b-card id="todolistPage" class="my-3">
+            <h2 class="d-flex align-items-baseline">
+                <font-awesome-icon icon="table-list" />
+                <span class="ml-2">To Do List</span>
+            </h2>
+
+            <b-button title="About" :to="{ name: 'home' }"><font-awesome-icon :icon="['fas', 'home']" class="mr-1" />
+                Home
+            </b-button>
+            <b-button title="About" :to="{ name: 'about' }" class="ml-2"><font-awesome-icon :icon="['fas', 'info']"
+                    class="mr-1" />
+                About
+            </b-button>
 
         </b-card>
-        <b-card class="my-2">
-            <b-input-group class="mt-3">
-                <b-input-group-append>
-                    <b-button variant="outline-success" @click="openModal()">Add New Task</b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </b-card>
-        <!-- {{ getTodoList }} -->
-        <b-card class="my-2" v-for="({ message, id }, index) in getTodoList" :key="index">
+        <div>
+            <b-card class="my-2">
+                <b-button ref="addNewTaskButton" variant="outline-success" @click="openModal()">Add New Task</b-button>
+            </b-card>
+        </div>
+        <b-card ref="todoCard" class="my-2" v-for="(todo, index) in myTodoList" :key="index">
             <b-row>
                 <b-col class="col-9">
-                    <b-card-text>{{ message }}</b-card-text>
+                    <b-card-text class="font-weight-bold">{{ todo.title }}</b-card-text>
+                    <b-card-text v-if="todo.description != null">{{ todo.description }}</b-card-text>
+                    <b-card-text>สร้างเมื่อ: {{ todo.readableCreatedAt }}</b-card-text>
                 </b-col>
                 <b-col class="col-3">
-                    <b-button class="mr-2" variant="success" @click="onEdit(message, id)">Edit</b-button>
-                    <b-button type="reset" variant="danger" v-b-modal="'my-modal'"
-                        @click="confirmDelete(id, message)">Delete</b-button>
+                    <b-button class="mr-2 button__edit" variant="warning" @click="onEdit(todo)">Edit</b-button>
+                    <b-button type="reset" variant="danger" class="button__delete"
+                        @click="confirmDelete(todo.id)">Delete</b-button>
                 </b-col>
             </b-row>
         </b-card>
-        <TodoModal :is-show-modal="modalShow" :message="message" :title="modalTitle"
-            @EditedItem="onEdited($event, editMessageId)" @hidden="event => closeModal(event)" @add="addTodolist" />
 
-        <b-modal v-model="modalDeleteShow" title="Confirm Delete">
-            <p class="my-4">Are you sure you want to delete this task?</p>
-            <p class="font-weight-bold">{{ this.deleteMessage }}</p>
-            <template #modal-footer="{ cancel }">
-                <b-button type="reset" variant="danger" @click="onDelete()">Yes</b-button>
-                <b-button variant="success" @click="cancel()">No</b-button>
-            </template>
-        </b-modal>
+        <TodoModal :is-show-modal="modalShow" :title="modalTitle" v-model="todo" @create:success="onCreateSuccess"
+            @update:success="onUpdateSuccess" @hidden="event => closeModal(event)" :deleteItem="deleteTodoId" />
+
     </div>
 </template>
 
 <script>
+import { todoMixin } from '@/mixins/todoMixin'
 import TodoList from '@/models/TodoList'
 import TodoModal from "../components/TodoModal.vue"
+import { User } from '@/models/User'
 
 
 export default {
@@ -61,77 +53,100 @@ export default {
     components: {
         TodoModal,
     },
+
+    mixins: [todoMixin],
     data() {
         return {
-            message: "",
+            title: "",
             modalShow: false,
-            modalDeleteShow: false,
-            editMessageId: "",
-            deleteMessageId: "",
-            deleteMessage: ""
+            todo: new TodoList(),
+            isEdit: false,
+            isDelete: false,
+            deleteTodoId: null
         }
+    },
+    async created() {
+        await this.fetch()
+    },
+    async mounted() {
+        try {
+            await User.api().fetchUser();
+        } catch (error) {
+            console.error(error);
+
+            alert("some thing went wrong!!!");
+        }
+
+        // this.$nextTick(() => {
+        //     console.log(this.$refs);
+        // })
     },
     computed: {
-        getTodoList() {
-            return TodoList.query().all()
-        },
         modalTitle() {
-            return this.editMessageId ? "Edit Task" : "Add New Task"
+            if (this.isEdit) {
+                return "Edit Task"
+            }
+            else if (this.isDelete) {
+                return "Confirm Delete"
+            }
+            else {
+                return "Add New Task"
+            }
+        },
+
+        user() {
+            return User.query().first();
+        },
+
+        myTodoList() {
+            let tasks = this.user ? this.$_todoMixin_getMyTodolist(this.user.id) : [];
+
+            return tasks
         }
+
     },
     methods: {
+        async fetch() {
+            try {
+                await this.$_todoMixin_getUserTask();
+            } catch (error) {
+                console.error(error);
+            }
+        },
         openModal() {
             this.modalShow = true
         },
         closeModal() {
-            // console.log(event);
             this.modalShow = false
-            this.message = ""
+            this.isEdit = false
+            this.isDelete = false
+            this.todo = new TodoList();
+
         },
-        onEdit(message, id) {
-            this.editMessageId = id
-            this.message = message
+        onEdit(todo) {
             this.modalShow = true
+            this.isEdit = true
+            this.todo = todo
+
         },
-        onEdited(editedMessage, editedId) {
-            console.log("edited", editedId, editedMessage);
-            TodoList.update({
-                data: {
-                    id: editedId,
-                    message: editedMessage
-                }
-            })
-            console.log("ทำถึงข้างล่าง");
+        onEdited() {
             this.modalShow = false
             this.closeModal()
         },
-        addTodolist(value) {
-            // console.log(value);
-            this.closeModal()
-            if (value.trim() === "" || value === null) {
-
-                alert("please enter somthing")
-            }
-            else {
-                TodoList.insert({
-                    data: { message: value }
-                })
-            }
-
+        confirmDelete(id) {
+            this.modalShow = true
+            this.deleteTodoId = id
+            this.isDelete = true
         },
-        confirmDelete(id, message) {
-            console.log("id", id)
-            this.deleteMessageId = id
-            this.deleteMessage = message
-            this.modalDeleteShow = true
+        onCreateSuccess() {
+            this.modalShow = false
         },
-        onDelete() {
-            console.log("1");
-            TodoList.delete(this.deleteMessageId)
-            console.log("2");
-            this.modalDeleteShow = false
-            console.log("3");
-        }
+
+        onUpdateSuccess() {
+            this.modalShow = false
+        },
+
+
     },
 }
 </script>

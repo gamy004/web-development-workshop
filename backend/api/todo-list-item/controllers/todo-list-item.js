@@ -9,7 +9,6 @@ const { sanitizeEntity } = require('strapi-utils');
 
 module.exports = {
     async createMyTodoListItem(ctx) {
-        console.log("state", ctx.state)
         const {user} = ctx.state;
 
         let entity;
@@ -22,29 +21,20 @@ module.exports = {
 
         entity = await strapi.services['todo-list-item'].create({ title, description, user: user.id });
 
-       return sanitizeEntity(entity, { model: strapi.models['todo-list-item'] });   
+        const insertedEntity = await strapi.services['todo-list-item'].findOne({ id: entity.id });
+
+       return sanitizeEntity(insertedEntity, { model: strapi.models['todo-list-item'] });   
     },
 
     async findMyTodoListItem(ctx) {
         const {user} = ctx.state;
         let entities;
 
-        // entities = await strapi.services['todo-list-item'].find({user: user.id});
-
-        // entities = await strapi.query('todo-list-item').find({user: user.id});
-        
-        // ctx.query.filters = {
-        //     ...(ctx.query.filters || {}),
-        //     user: user.id,
-        //   };
-        //   entities = await strapi.query['todo-list-item'].find(ctx);
-
         if (ctx.query._q) {
           entities = await strapi.services['todo-list-item'].search({ _q: ctx.query._q, user: user.id });
         } else {
-          entities = await strapi.services['todo-list-item'].find({ ...ctx.query, user: user.id }, []);
+          entities = await strapi.services['todo-list-item'].find({ ...ctx.query, user: user.id },[]);
         }
-    
         return entities.map(entity => sanitizeEntity(entity, { model: strapi.models['todo-list-item'] }));
       },
 
@@ -59,7 +49,6 @@ module.exports = {
         }
       
         entity = await strapi.services['todo-list-item'].update({id},{title,description});
-
         return sanitizeEntity(entity, { model: strapi.models['todo-list-item'] });
 
       }, 
