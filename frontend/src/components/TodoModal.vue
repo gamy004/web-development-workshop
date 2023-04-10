@@ -1,13 +1,13 @@
 <template>
     <div>
-        <b-modal id="todo-modal" :title="title" :hide-footer="!isDelete" @hidden="$emit('hidden')" static
+        <b-modal id="todo-modal" ref="todoModal" :title="title" :hide-footer="!isDelete" @hidden="$emit('hidden')" static
             v-model="showModal">
             <div v-if="!isDelete">
                 <b-form-group label="Title">
-                    <b-form-input type="text" v-model="displayTitle" />
+                    <b-form-input ref="input__title" type="text" v-model="displayTitle" />
                 </b-form-group>
                 <b-form-group label="Description">
-                    <b-form-textarea rows="5" max-rows="5" v-model="displayDescription" />
+                    <b-form-textarea ref="input__description" rows="5" max-rows="5" v-model="displayDescription" />
                 </b-form-group>
 
 

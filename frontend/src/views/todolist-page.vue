@@ -28,7 +28,8 @@
                     <b-card-text>สร้างเมื่อ: {{ todo.readableCreatedAt }}</b-card-text>
                 </b-col>
                 <b-col class="col-3">
-                    <b-button class="mr-2 button__edit" variant="warning" @click="onEdit(todo)">Edit</b-button>
+                    <b-button ref="editTaskButton" class="mr-2 button__edit" variant="warning"
+                        @click="onEdit(todo)">Edit</b-button>
                     <b-button type="reset" variant="danger" class="button__delete"
                         @click="confirmDelete(todo.id)">Delete</b-button>
                 </b-col>
