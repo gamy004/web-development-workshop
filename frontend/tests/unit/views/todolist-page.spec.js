@@ -128,6 +128,12 @@ describe("todolist-page.vue", () => {
 });
 
 it("Should show modal when click add edit task button ", async () => {
+  // สั่งให้ jest คอยตรวจ method "onUpdateSuccess"
+  const onUpdateSuccessSpy = jest.spyOn(
+    todolistPage.methods,
+    "onUpdateSuccess"
+  );
+
   // const editTodo = {
   //   id: 1,
   //   title: "test edit task",
@@ -171,6 +177,15 @@ it("Should show modal when click add edit task button ", async () => {
       todoListData.map((data) => new TodoList({ ...data, userId: userData.id }))
     );
 
+  // แก้ให้ mock api โดยการ return ค่าที่ส่งมาจาก param แทน fix value จาก inputTitle กับ inputDescription
+  TodoList.api().updateUserTask.mockImplementationOnce(
+    ({ id, title, description }) => ({
+      id,
+      title,
+      description,
+    })
+  );
+
   const wrapper = mount(todolistPage, {
     localVue,
     TodoModal,
@@ -180,23 +195,38 @@ it("Should show modal when click add edit task button ", async () => {
 
   const button = wrapper.findComponent({ ref: "editTaskButton" });
   await button.trigger("click");
+
   expect(wrapper.vm.modalShow).toBe(true);
-  expect(wrapper.isVisible()).toBe(true);
 
   const todoModal = wrapper.findComponent(TodoModal);
+
+  expect(todoModal.isVisible()).toBe(true);
   expect(todoModal.exists()).toBe(true);
   expect(todoModal.text()).toContain("Edit Task");
   expect(todoModal.text()).toContain("Title");
   expect(todoModal.text()).toContain("Description");
 
   const inputTitle = todoModal.findComponent({ ref: "input__title" });
-  await inputTitle.setValue("test edit task");
+  // เช็ค value ของ input เท่ากับค่าเริ่มต้น title ไหม
+  expect(inputTitle.element.value).toBe("test20");
+
+  // เทสเปลี่ยนค่า value title
+  await inputTitle.setValue(newTodolistData.title);
+
+  // เช็ค value ของ input เท่ากับค่าใหม่ title ไหม
   expect(inputTitle.element.value).toBe(newTodolistData.title);
 
   const inputDescription = todoModal.findComponent({
     ref: "input__description",
   });
-  await inputDescription.setValue("test edit description");
+
+  // เช็ค value ของ input เท่ากับค่าเริ่มต้น description ไหม
+  expect(inputDescription.element.value).toBe("");
+
+  // เทสเปลี่ยนค่า value description
+  await inputDescription.setValue(newTodolistData.description);
+
+  // เช็ค value ของ input เท่ากับค่าเริ่มใหม่ description ไหม
   expect(inputDescription.element.value).toBe(newTodolistData.description);
 
   const editButton = todoModal.find(".button__edit");
@@ -207,8 +237,15 @@ it("Should show modal when click add edit task button ", async () => {
 
   await flushPromises();
 
-  TodoList.api().updateUserTask.mockImplementationOnce(() => {
-    inputTitle.element.value, inputDescription.element.value;
-  });
+  // TodoList.api().updateUserTask.mockImplementationOnce(() => {
+  //   inputTitle.element.value, inputDescription.element.value;
+  // });
+
   expect(TodoList.api().updateUserTask).toBeCalledWith(newTodolistData);
+
+  // เช็คว่า TodoModal ควร emit event "update:success" ด้วย
+  expect(todoModal.emitted("update:success")).toBeTruthy();
+
+  // เช็คว่า method "OnUpdateSuccess" ถูกเรียกไหม หลังจากที่ event "update:success" ถูก emit
+  expect(onUpdateSuccessSpy).toHaveBeenCalled();
 });
