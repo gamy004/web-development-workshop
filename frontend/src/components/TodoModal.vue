@@ -18,10 +18,10 @@
                     @click="onCreate()">Add
                 </b-button>
             </div>
-            <p class="my-4" v-if="isDelete">Are you sure you want to delete this task?</p>
+            <p class="my-4" ref="title__modal-delete" v-if="isDelete">Are you sure you want to delete this task?</p>
             <template #modal-footer="{ cancel }" v-if="isDelete">
-                <b-button type="reset" variant="danger" @click="onDelete()">Yes</b-button>
-                <b-button variant="success" @click="cancel()">No</b-button>
+                <b-button ref="button__modal-delete-yes" type="reset" variant="danger" @click="onDelete()">Yes</b-button>
+                <b-button ref="button__modal-delete-no" variant="success" @click="cancel()">No</b-button>
             </template>
 
         </b-modal>

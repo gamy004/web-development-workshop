@@ -53,7 +53,6 @@ export class TodoList extends Model {
       },
       deleteUserTask(payload) {
         const id = payload.id;
-
         return this.delete(`/my/todo-list-items/${id}`, { delete: id });
       },
     },

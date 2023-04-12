@@ -111,6 +111,7 @@ describe("todolist-page.vue", () => {
     await flushPromises();
 
     const button = wrapper.findComponent({ ref: "addNewTaskButton" }); // button add for open modal
+    expect(button.exists()).toBe(true);
     await button.trigger("click");
     expect(wrapper.vm.modalShow).toBe(true);
     expect(wrapper.isVisible()).toBe(true);
@@ -127,88 +128,215 @@ describe("todolist-page.vue", () => {
   });
 });
 
-it("Should show modal when click add edit task button ", async () => {
-  // const editTodo = {
-  //   id: 1,
-  //   title: "test edit task",
-  //   description: "test edit description",
-  // };
+it(
+  "Should show modal when click add edit task button ",
+  async () => {
+    // const editTodo = {
+    //   id: 1,
+    //   title: "test edit task",
+    //   description: "test edit description",
+    // };
 
-  const userData = {
-    id: 2,
-    username: "user2",
-    email: "user2@test.com",
-    confirmed: true,
-    role: { id: 1, name: "Authenticated" },
-  };
+    const userData = {
+      id: 2,
+      username: "user2",
+      email: "user2@test.com",
+      confirmed: true,
+      role: { id: 1, name: "Authenticated" },
+    };
 
-  const todoListData = [
-    {
-      id: 1,
-      title: "test20",
-      description: null,
-      created_at: "2023-04-05T08:00:00.000Z",
-      user: {
-        ...userData,
-        role: 1,
+    const todoListData = [
+      {
+        id: 1,
+        title: "test20",
+        description: null,
+        created_at: "2023-04-05T08:00:00.000Z",
+        user: {
+          ...userData,
+          role: 1,
+        },
       },
-    },
-  ];
+    ];
 
-  const newTodolistData = {
-    id: 1,
-    title: "test edit task",
-    description: "test edit description",
-  };
+    const newTodolistData = {
+      id: 1,
+      title: "test edit task",
+      description: "test edit description",
+    };
 
-  User.query().first.mockImplementationOnce(
-    () => new User({ ...userData, roleId: 1 })
-  );
-
-  TodoList.query()
-    .where("userId", userData.id)
-    .get.mockImplementationOnce(() =>
-      todoListData.map((data) => new TodoList({ ...data, userId: userData.id }))
+    User.query().first.mockImplementationOnce(
+      () => new User({ ...userData, roleId: 1 })
     );
 
-  const wrapper = mount(todolistPage, {
-    localVue,
-    TodoModal,
-  });
+    TodoList.query()
+      .where("userId", userData.id)
+      .get.mockImplementationOnce(() =>
+        todoListData.map(
+          (data) => new TodoList({ ...data, userId: userData.id })
+        )
+      );
 
-  await flushPromises();
+    const wrapper = mount(todolistPage, {
+      localVue,
+      TodoModal,
+    });
 
-  const button = wrapper.findComponent({ ref: "editTaskButton" });
-  await button.trigger("click");
-  expect(wrapper.vm.modalShow).toBe(true);
-  expect(wrapper.isVisible()).toBe(true);
+    await flushPromises();
 
-  const todoModal = wrapper.findComponent(TodoModal);
-  expect(todoModal.exists()).toBe(true);
-  expect(todoModal.text()).toContain("Edit Task");
-  expect(todoModal.text()).toContain("Title");
-  expect(todoModal.text()).toContain("Description");
+    const button = wrapper.findComponent({ ref: "editTaskButton" });
+    expect(button.exists()).toBe(true);
 
-  const inputTitle = todoModal.findComponent({ ref: "input__title" });
-  await inputTitle.setValue("test edit task");
-  expect(inputTitle.element.value).toBe(newTodolistData.title);
+    await button.trigger("click");
+    expect(wrapper.vm.modalShow).toBe(true);
+    expect(wrapper.isVisible()).toBe(true);
 
-  const inputDescription = todoModal.findComponent({
-    ref: "input__description",
-  });
-  await inputDescription.setValue("test edit description");
-  expect(inputDescription.element.value).toBe(newTodolistData.description);
+    const todoModal = wrapper.findComponent(TodoModal);
+    expect(todoModal.exists()).toBe(true);
+    expect(todoModal.text()).toContain("Edit Task");
+    expect(todoModal.text()).toContain("Title");
+    expect(todoModal.text()).toContain("Description");
 
-  const editButton = todoModal.find(".button__edit");
-  expect(editButton.exists()).toBeTruthy();
-  expect(editButton.text()).toContain("Edit");
+    const inputTitle = todoModal.findComponent({ ref: "input__title" });
+    await inputTitle.setValue("test edit task");
+    expect(inputTitle.element.value).toBe(newTodolistData.title);
 
-  await editButton.trigger("click");
+    const inputDescription = todoModal.findComponent({
+      ref: "input__description",
+    });
+    await inputDescription.setValue("test edit description");
+    expect(inputDescription.element.value).toBe(newTodolistData.description);
 
-  await flushPromises();
+    const editButton = todoModal.find(".button__edit");
+    expect(editButton.exists()).toBeTruthy();
+    expect(editButton.text()).toContain("Edit");
 
-  TodoList.api().updateUserTask.mockImplementationOnce(() => {
-    inputTitle.element.value, inputDescription.element.value;
-  });
-  expect(TodoList.api().updateUserTask).toBeCalledWith(newTodolistData);
-});
+    await editButton.trigger("click");
+
+    await flushPromises();
+
+    TodoList.api().updateUserTask.mockImplementationOnce(() => {
+      inputTitle.element.value, inputDescription.element.value;
+    });
+    expect(TodoList.api().updateUserTask).toHaveBeenCalledWith(newTodolistData);
+  },
+
+  it("Should display delete modal", async () => {
+    const userData = {
+      id: 2,
+      username: "user2",
+      email: "user2@test.com",
+      confirmed: true,
+      role: { id: 1, name: "Authenticated" },
+    };
+
+    const todoListData = [
+      {
+        id: 1,
+        title: "test20",
+        description: null,
+        created_at: "2023-04-05T08:00:00.000Z",
+        user: {
+          ...userData,
+          role: 1,
+        },
+      },
+    ];
+
+    User.query().first.mockImplementationOnce(
+      () => new User({ ...userData, roleId: 1 })
+    );
+
+    TodoList.query()
+      .where("userId", userData.id)
+      .get.mockImplementationOnce(() =>
+        todoListData.map(
+          (data) => new TodoList({ ...data, userId: userData.id })
+        )
+      );
+
+    const wrapper = mount(todolistPage, {
+      localVue,
+      TodoModal,
+      propsData: {
+        todo: todoListData,
+      },
+    });
+
+    await flushPromises();
+
+    const button = wrapper.findComponent({ ref: "deleteTaskButton" });
+    expect(button.exists()).toBe(true);
+
+    await button.trigger("click");
+    expect(wrapper.vm.modalShow).toBe(true);
+    expect(wrapper.isVisible()).toBe(true);
+
+    const todoModal = wrapper.findComponent(TodoModal);
+    expect(todoModal.exists()).toBe(true);
+    expect(todoModal.isVisible()).toBe(true);
+    expect(todoModal.text()).toContain("Confirm Delete");
+
+    const buttonCancelDelete = todoModal.findComponent({
+      ref: "button__modal-delete-no",
+    });
+    expect(buttonCancelDelete.exists()).toBe(true);
+
+    const buttonConfirmDelete = todoModal.findComponent({
+      ref: "button__modal-delete-yes",
+    });
+    expect(buttonConfirmDelete.exists()).toBe(true);
+  }),
+
+  it("Should set deleted id of todo list item when delete todo list item", async () => {
+    const deletedID = 1;
+
+    const userData = {
+      id: 2,
+      username: "user2",
+      email: "user2@test.com",
+      confirmed: true,
+      role: { id: 1, name: "Authenticated" },
+    };
+
+    const todoListData = [
+      {
+        id: 1,
+        title: "test20",
+        description: null,
+        created_at: "2023-04-05T08:00:00.000Z",
+        user: {
+          ...userData,
+          role: 1,
+        },
+      },
+    ];
+
+    User.query().first.mockImplementationOnce(
+      () => new User({ ...userData, roleId: 1 })
+    );
+
+    TodoList.query()
+      .where("userId", userData.id)
+      .get.mockImplementationOnce(() =>
+        todoListData.map(
+          (data) => new TodoList({ ...data, userId: userData.id })
+        )
+      );
+
+    const wrapper = mount(todolistPage, {
+      localVue,
+      TodoModal,
+      propsData: {
+        deleteTodoId: deletedID,
+      },
+    });
+
+    const button = wrapper.findComponent({ ref: "deleteTaskButton" });
+    expect(button.exists()).toBe(true);
+
+    const todoModal = wrapper.findComponent(TodoModal);
+    expect(todoModal.exists()).toBe(true);
+
+    expect(wrapper.vm.deleteItem).toBe(1);
+  })
+);
