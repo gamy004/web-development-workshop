@@ -13,7 +13,6 @@
                     class="mr-1" />
                 About
             </b-button>
-
         </b-card>
         <div>
             <b-card class="my-2">
@@ -24,33 +23,33 @@
             <b-row>
                 <b-col class="col-9">
                     <b-card-text class="font-weight-bold">{{ todo.title }}</b-card-text>
-                    <b-card-text v-if="todo.description != null">{{ todo.description }}</b-card-text>
+                    <b-card-text v-if="todo.description != null">{{
+                        todo.description
+                    }}</b-card-text>
                     <b-card-text>สร้างเมื่อ: {{ todo.readableCreatedAt }}</b-card-text>
                 </b-col>
                 <b-col class="col-3">
                     <b-button ref="editTaskButton" class="mr-2 button__edit" variant="warning"
                         @click="onEdit(todo)">Edit</b-button>
-                    <b-button ref="deleteTaskButton" type="reset" variant="danger" class="button__delete"
+                    <b-button type="reset" variant="danger" class="button__delete"
                         @click="confirmDelete(todo.id)">Delete</b-button>
                 </b-col>
             </b-row>
         </b-card>
 
         <TodoModal :is-show-modal="modalShow" :title="modalTitle" v-model="todo" @create:success="onCreateSuccess"
-            @update:success="onUpdateSuccess" @hidden="event => closeModal(event)" :deleteItem="deleteTodoId" />
-
+            @update:success="onUpdateSuccess" @hidden="(event) => closeModal(event)" :deleteItem="deleteTodoId" />
     </div>
 </template>
 
 <script>
-import { todoMixin } from '@/mixins/todoMixin'
-import TodoList from '@/models/TodoList'
-import TodoModal from "../components/TodoModal.vue"
-import { User } from '@/models/User'
-
+import { todoMixin } from "@/mixins/todoMixin";
+import TodoList from "@/models/TodoList";
+import TodoModal from "../components/TodoModal.vue";
+import { User } from "@/models/User";
 
 export default {
-    emits: ['update:message'],
+    emits: ["update:message"],
     components: {
         TodoModal,
     },
@@ -63,11 +62,11 @@ export default {
             todo: new TodoList(),
             isEdit: false,
             isDelete: false,
-            deleteTodoId: null
-        }
+            deleteTodoId: null,
+        };
     },
     async created() {
-        await this.fetch()
+        await this.fetch();
     },
     async mounted() {
         try {
@@ -85,13 +84,11 @@ export default {
     computed: {
         modalTitle() {
             if (this.isEdit) {
-                return "Edit Task"
-            }
-            else if (this.isDelete) {
-                return "Confirm Delete"
-            }
-            else {
-                return "Add New Task"
+                return "Edit Task";
+            } else if (this.isDelete) {
+                return "Confirm Delete";
+            } else {
+                return "Add New Task";
             }
         },
 
@@ -102,9 +99,8 @@ export default {
         myTodoList() {
             let tasks = this.user ? this.$_todoMixin_getMyTodolist(this.user.id) : [];
 
-            return tasks
-        }
-
+            return tasks;
+        },
     },
     methods: {
         async fetch() {
@@ -115,41 +111,37 @@ export default {
             }
         },
         openModal() {
-            this.modalShow = true
+            this.modalShow = true;
         },
         closeModal() {
-            this.modalShow = false
-            this.isEdit = false
-            this.isDelete = false
+            this.modalShow = false;
+            this.isEdit = false;
+            this.isDelete = false;
             this.todo = new TodoList();
-
         },
         onEdit(todo) {
-            this.modalShow = true
-            this.isEdit = true
-            this.todo = todo
-
+            this.modalShow = true;
+            this.isEdit = true;
+            this.todo = todo;
         },
         onEdited() {
-            this.modalShow = false
-            this.closeModal()
+            this.modalShow = false;
+            this.closeModal();
         },
         confirmDelete(id) {
-            this.modalShow = true
-            this.deleteTodoId = id
-            this.isDelete = true
+            this.modalShow = true;
+            this.deleteTodoId = id;
+            this.isDelete = true;
         },
         onCreateSuccess() {
-            this.modalShow = false
+            this.modalShow = false;
         },
 
         onUpdateSuccess() {
-            this.modalShow = false
+            this.modalShow = false;
         },
-
-
     },
-}
+};
 </script>
 
 <style lang="scss" scoped></style>
