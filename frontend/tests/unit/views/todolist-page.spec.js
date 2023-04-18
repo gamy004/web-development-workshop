@@ -111,7 +111,6 @@ describe("todolist-page.vue", () => {
     await flushPromises();
 
     const button = wrapper.findComponent({ ref: "addNewTaskButton" }); // button add for open modal
-    expect(button.exists()).toBe(true);
     await button.trigger("click");
     expect(wrapper.vm.modalShow).toBe(true);
     expect(wrapper.isVisible()).toBe(true);
@@ -129,7 +128,7 @@ describe("todolist-page.vue", () => {
 });
 
 it(
-  "Should show modal when click add edit task button ",
+  "Should show modal when click add edit task button",
   async () => {
     // สั่งให้ jest คอยตรวจ method "onUpdateSuccess"
     const onUpdateSuccessSpy = jest.spyOn(
@@ -137,85 +136,6 @@ it(
       "onUpdateSuccess"
     );
 
-    // const editTodo = {
-    //   id: 1,
-    //   title: "test edit task",
-    //   description: "test edit description",
-    // };
-
-    const userData = {
-      id: 2,
-      username: "user2",
-      email: "user2@test.com",
-      confirmed: true,
-      role: { id: 1, name: "Authenticated" },
-    };
-
-    const todoListData = [
-      {
-        id: 1,
-        title: "test edit task",
-        description: "test edit description",
-      },
-    ];
-
-    User.query().first.mockImplementationOnce(
-      () => new User({ ...userData, roleId: 1 })
-    );
-
-    TodoList.query()
-      .where("userId", userData.id)
-      .get.mockImplementationOnce(() =>
-        todoListData.map(
-          (data) => new TodoList({ ...data, userId: userData.id })
-        )
-      );
-
-    const wrapper = mount(todolistPage, {
-      localVue,
-      TodoModal,
-    });
-
-    await flushPromises();
-
-    const button = wrapper.findComponent({ ref: "editTaskButton" });
-    expect(button.exists()).toBe(true);
-
-    await button.trigger("click");
-    expect(wrapper.vm.modalShow).toBe(true);
-    expect(wrapper.isVisible()).toBe(true);
-
-    const todoModal = wrapper.findComponent(TodoModal);
-    expect(todoModal.exists()).toBe(true);
-    expect(todoModal.text()).toContain("Edit Task");
-    expect(todoModal.text()).toContain("Title");
-    expect(todoModal.text()).toContain("Description");
-
-    const inputTitle = todoModal.findComponent({ ref: "input__title" });
-    await inputTitle.setValue("test edit task");
-    expect(inputTitle.element.value).toBe(newTodolistData.title);
-
-    const inputDescription = todoModal.findComponent({
-      ref: "input__description",
-    });
-    await inputDescription.setValue("test edit description");
-    expect(inputDescription.element.value).toBe(newTodolistData.description);
-
-    const editButton = todoModal.find(".button__edit");
-    expect(editButton.exists()).toBeTruthy();
-    expect(editButton.text()).toContain("Edit");
-
-    await editButton.trigger("click");
-
-    await flushPromises();
-
-    TodoList.api().updateUserTask.mockImplementationOnce(() => {
-      inputTitle.element.value, inputDescription.element.value;
-    });
-    expect(TodoList.api().updateUserTask).toHaveBeenCalledWith(newTodolistData);
-  },
-
-  it("Should display delete modal", async () => {
     const userData = {
       id: 2,
       username: "user2",
@@ -237,9 +157,23 @@ it(
       },
     ];
 
+    const newTodolistData = {
+      id: 1,
+      title: "test edit task",
+      description: "test edit description",
+    };
+
     User.query().first.mockImplementationOnce(
       () => new User({ ...userData, roleId: 1 })
     );
+
+    TodoList.query()
+      .where("userId", userData.id)
+      .get.mockImplementationOnce(() =>
+        todoListData.map(
+          (data) => new TodoList({ ...data, userId: userData.id })
+        )
+      );
 
     // แก้ให้ mock api โดยการ return ค่าที่ส่งมาจาก param แทน fix value จาก inputTitle กับ inputDescription
     TodoList.api().updateUserTask.mockImplementationOnce(
@@ -255,13 +189,7 @@ it(
       TodoModal,
     });
 
-    // const wrapper = mount(todolistPage, {
-    //   localVue,
-    //   TodoModal,
-    //   propsData: {
-    //     todo: todoListData,
-    //   },
-    // });
+    await flushPromises();
 
     const button = wrapper.findComponent({ ref: "editTaskButton" });
     await button.trigger("click");
@@ -299,19 +227,13 @@ it(
     // เช็ค value ของ input เท่ากับค่าเริ่มใหม่ description ไหม
     expect(inputDescription.element.value).toBe(newTodolistData.description);
 
-    const buttonCancelDelete = todoModal.findComponent({
-      ref: "button__modal-delete-no",
-    });
-    expect(buttonCancelDelete.exists()).toBe(true);
+    const editButton = todoModal.find(".button__edit");
+    expect(editButton.exists()).toBeTruthy();
+    expect(editButton.text()).toContain("Edit");
 
-    const buttonConfirmDelete = todoModal.findComponent({
-      ref: "button__modal-delete-yes",
-    });
-    expect(buttonConfirmDelete.exists()).toBe(true);
-  }),
+    await editButton.trigger("click");
 
-  it("Should set deleted id of todo list item when delete todo list item", async () => {
-    const deletedID = 1;
+    await flushPromises();
 
     // TodoList.api().updateUserTask.mockImplementationOnce(() => {
     //   inputTitle.element.value, inputDescription.element.value;
@@ -324,5 +246,93 @@ it(
 
     // เช็คว่า method "OnUpdateSuccess" ถูกเรียกไหม หลังจากที่ event "update:success" ถูก emit
     expect(onUpdateSuccessSpy).toHaveBeenCalled();
+  },
+
+  it("Should display delete modal and delete item", async () => {
+    const onDeleteSuccessSpy = jest.spyOn(
+      todolistPage.methods,
+      "onDeleteSuccess"
+    );
+
+    const userData = {
+      id: 2,
+      username: "user2",
+      email: "user2@test.com",
+      confirmed: true,
+      role: { id: 1, name: "Authenticated" },
+    };
+
+    const todoListData = [
+      {
+        id: 1,
+        title: "test20",
+        description: null,
+        created_at: "2023-04-05T08:00:00.000Z",
+        user: {
+          ...userData,
+          role: 1,
+        },
+      },
+    ];
+
+    const taskId = 1;
+
+    User.query().first.mockImplementationOnce(
+      () => new User({ ...userData, roleId: 1 })
+    );
+
+    TodoList.query()
+      .where("userId", userData.id)
+      .get.mockImplementationOnce(() =>
+        todoListData.map(
+          (data) => new TodoList({ ...data, userId: userData.id })
+        )
+      );
+
+    TodoList.api().deleteUserTask.mockImplementationOnce((id) => id);
+
+    const wrapper = mount(todolistPage, {
+      localVue,
+      TodoModal,
+      propsData: {
+        deleteItem: taskId,
+      },
+    });
+
+    await flushPromises();
+
+    const button = wrapper.findComponent({ ref: "deleteTaskButton" });
+    await button.trigger("click");
+
+    expect(wrapper.vm.modalShow).toBe(true);
+
+    expect(wrapper.vm.deleteTodoId).toBe(taskId);
+
+    const todoModal = wrapper.findComponent(TodoModal);
+
+    expect(todoModal.isVisible()).toBe(true);
+    expect(todoModal.exists()).toBe(true);
+    expect(todoModal.text()).toContain("Confirm Delete");
+
+    console.log(todoModal.props());
+    expect(todoModal.props().deleteItem).toBe(taskId);
+
+    expect(
+      todoModal.findComponent({ ref: "button__modal-delete-cancel" })
+    ).toBeTruthy();
+
+    const buttonConfirmDelete = todoModal.findComponent({
+      ref: "button__modal-delete-confirm",
+    });
+    expect(buttonConfirmDelete.exists()).toBe(true);
+
+    await buttonConfirmDelete.trigger("click");
+
+    await flushPromises();
+
+    expect(TodoList.api().deleteUserTask).toBeCalledWith({ id: taskId });
+    expect(todoModal.emitted("delelte:success")).toBeTruthy();
+
+    expect(onDeleteSuccessSpy).toHaveBeenCalled();
   })
 );

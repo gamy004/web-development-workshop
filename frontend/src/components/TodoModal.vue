@@ -21,8 +21,9 @@
                 Are you sure you want to delete this task?
             </p>
             <template #modal-footer="{ cancel }" v-if="isDelete">
-                <b-button type="reset" variant="danger" @click="onDelete()">Yes</b-button>
-                <b-button variant="success" @click="cancel()">No</b-button>
+                <b-button ref="button__modal-delete-confirm" type="reset" variant="danger"
+                    @click="onDelete()">Yes</b-button>
+                <b-button ref="button__modal-delete-cancel" variant="success" @click="cancel()">No</b-button>
             </template>
         </b-modal>
     </div>
@@ -116,8 +117,8 @@ export default {
         },
         onDelete() {
             this.$_todoMixin_deleteUserTask({ id: this.deleteItem });
-            this.$bvModal.hide("todo-modal");
-            // this.$emit("delelte:success")
+            // this.$bvModal.hide("todo-modal");
+            this.$emit("delelte:success")
         },
     },
 };
