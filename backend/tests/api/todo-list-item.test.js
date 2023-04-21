@@ -1,7 +1,14 @@
-const { setupStrapi, clearDatabase } = require("./../helpers/strapi");
+const request = require("supertest");
+const {
+  setupStrapi,
+  clearDatabase,
+  grantPrivilege,
+  jwt,
+} = require("./../helpers/strapi");
 
 async function clearAllMockData() {
   await strapi.query("user", "users-permissions").delete();
+  await strapi.query("todo-list-item").delete();
 }
 
 describe("service: todo-list-item", () => {
@@ -12,7 +19,7 @@ describe("service: todo-list-item", () => {
 
   afterAll(async () => {
     await clearAllMockData();
-    clearDatabase();
+    await clearDatabase();
     await strapi.destroy();
   });
 
@@ -73,5 +80,44 @@ describe("service: todo-list-item", () => {
     }
 
     await expect(createEntity()).rejects.toThrowError("title is required");
+  });
+
+  // API testing example
+  it("should return empty array when no todo list items", async () => {
+    // Add mock user with role "Authenticated"
+    const mockUser = await strapi.query("user", "users-permissions").create({
+      username: "userMock",
+      email: "userMock@test.com",
+      role: 1, // Authenticated
+    });
+
+    // Generate jwt token for mock User
+    const authToken = jwt(mockUser.id);
+
+    // Enable API that will be tested for role Authenticated
+    // ชื่อ controller ใช้ตาม directory เช่น todo-list-item
+    // ชื่อ action ที่ใช้ เป็น lowercase ทั้งหมด เช่น findMyTodoListItem ใช้ findmytodolistitem
+    await grantPrivilege(
+      1,
+      "permissions.application.controllers.todo-list-item.findmytodolistitem",
+      true
+    );
+
+    // call API attached with Authorization header using generated jwt from line 94
+    await request(strapi.server)
+      .get("/my/todo-list-items")
+      .set("Content-type", "application/json")
+      .set("Authorization", `Bearer ${authToken}`)
+      .expect(200) // Expect response http code 200
+      .then((res) => {
+        expect(res.body).toStrictEqual([]); // expect the response text
+      });
+
+    // Disable API that will be tested for role Authenticated
+    await grantPrivilege(
+      1,
+      "permissions.application.controllers.todo-list-item.findmytodolistitem",
+      false
+    );
   });
 });

@@ -60,9 +60,52 @@ function clearDatabase() {
   }
 }
 
+/**
+ * Returns valid JWT token for authenticated
+ * @param {String | number} idOrEmail, either user id, or email
+ */
+const jwt = (idOrEmail) =>
+  strapi.plugins["users-permissions"].services.jwt.issue({
+    [Number.isInteger(idOrEmail) ? "id" : "email"]: idOrEmail,
+  });
+
+/**
+ * Grants database `permissions` table that role can access an endpoint/controllers
+ *
+ * @param {int} roleID, 1 Autentihected, 2 Public, etc
+ * @param {string} value, in form or dot string eg `"permissions.users-permissions.controllers.auth.changepassword"`
+ * @param {boolean} enabled, default true
+ * @param {string} policy, default ''
+ */
+const grantPrivilege = async (
+  roleID = 1,
+  value,
+  enabled = true,
+  policy = ""
+) => {
+  const updateObj = value
+    .match(/[a-zA-Z-]+[^.|^[\]']/gm)
+    .reduceRight((obj, next) => ({ [next]: obj }), { enabled, policy });
+
+  return strapi.plugins[
+    "users-permissions"
+  ].services.userspermissions.updateRole(roleID, updateObj);
+};
+
+/** Updates database `permissions` that role can access an endpoint
+ * @see grantPrivilege
+ */
+
+const grantPrivileges = async (roleID = 1, values = []) => {
+  await Promise.all(values.map((val) => grantPrivilege(roleID, val)));
+};
+
 module.exports = {
   sleep,
   setupStrapi,
   stopStrapi,
-  clearDatabase
+  clearDatabase,
+  grantPrivilege,
+  grantPrivileges,
+  jwt,
 };

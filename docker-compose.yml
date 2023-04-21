@@ -24,6 +24,12 @@ services:
       - DATABASE_NAME=workshop
       - DATABASE_USERNAME=workshop
       - DATABASE_PASSWORD=workshop
+      - TEST_DATABASE_CONNECTION=local
+      - TEST_DATABASE_HOST=db
+      - TEST_DATABASE_PORT=3306
+      - TEST_DATABASE_NAME=workshop
+      - TEST_DATABASE_USERNAME=workshop
+      - TEST_DATABASE_PASSWORD=workshop
       - DATABASE_SSL=false
       - PORT=1337
       - ADMIN_JWT_SECRET=mIMPgb1sknbKqPZNqv75axfGuYgd3uUmmXYybXw3L8a2bmRKzPIPZsWYsYqrXgiHse7wUH30Pj9B9B+ko35mB+/3YXUX6MPdTojtwqiD9oUgbYXkK2fl5GGTEG7EznotxRFJd0Q3euwrYPwDCzVsUj5Sh5WWZagM6yTBkV6G/CdeutPREPP/R66C8zNSA2IE3H2xxo/fzRwiw3RNcoTG3i7iz7ydg5hv6gHRyw8+8T+EDUw6UMLIxt6oStO/xXPvSpwv5l3I/MfmLeIoNV7pTRhd3rW1jKaoYWfjzQurdDuIsR1CeYTcfiDaGWzDZPe+4EMPTmfTdYWjhJFIXvZ+Fg==
