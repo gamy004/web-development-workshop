@@ -23,23 +23,25 @@ const router = new Router({
       path: "/about",
       name: "about",
       meta: {
-        authorized: true
+        authorized: true,
       },
-      component: () => import(
-        /* webpackChunkName: "page--about" */
-        "./views/about-page.vue"
-      ),
+      component: () =>
+        import(
+          /* webpackChunkName: "page--about" */
+          "./views/about-page.vue"
+        ),
     },
     {
       path: "/todolist",
       name: "todolist",
       meta: {
-        authorized: true
+        authorized: true,
       },
-      component: () => import(
-        /* webpackChunkName: "page--about" */
-        "./views/todolist-page.vue"
-      ),
+      component: () =>
+        import(
+          /* webpackChunkName: "page--about" */
+          "./views/todolist-page.vue"
+        ),
     },
     // route guard redirect to home page, trigger when invalid path has been request for page
     { path: "*", name: "guard", redirect: "/" },
@@ -48,9 +50,9 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   // hook that triggered after the router has been mounted current page
-  console.log(to, from);
+  console.log(to, from, User.isLoggedIn());
   if (to.meta.authorized && !User.isLoggedIn()) {
-    return next({ path: "/" })
+    return next({ path: "/" });
   }
 
   return next();

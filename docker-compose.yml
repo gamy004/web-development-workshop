@@ -13,6 +13,19 @@ services:
       - "33067:3306"
     volumes:
       - db_volume:/var/lib/mysql
+  
+  test_db:
+    image: mariadb:10.4
+    restart: always
+    environment:
+      - MYSQL_DATABASE=workshop
+      - MYSQL_USER=workshop
+      - MYSQL_PASSWORD=workshop
+      - MYSQL_ROOT_PASSWORD=workshop
+    ports:
+      - "33068:3306"
+    volumes:
+      - test_db_volume:/var/lib/mysql
 
   backend:
     image: strapi/strapi
@@ -25,7 +38,7 @@ services:
       - DATABASE_USERNAME=workshop
       - DATABASE_PASSWORD=workshop
       - TEST_DATABASE_CONNECTION=local
-      - TEST_DATABASE_HOST=db
+      - TEST_DATABASE_HOST=test_db
       - TEST_DATABASE_PORT=3306
       - TEST_DATABASE_NAME=workshop
       - TEST_DATABASE_USERNAME=workshop
@@ -39,6 +52,7 @@ services:
       - "1337:1337"
     depends_on:
       - db
+      - test_db
 
   frontend:
     build:
@@ -55,4 +69,6 @@ services:
 
 volumes:
   db_volume:
+    driver: local
+  test_db_volume:
     driver: local
