@@ -244,6 +244,7 @@ describe("service: todo-list-item", () => {
       .then((res) => {
         expect(res.body.title).toBe("test title");
         expect(res.body.description).toBe("test description");
+        expect(res.body.user.id).toBe(mockUser.id);
       });
 
     await grantPrivilege(
@@ -364,21 +365,20 @@ describe("service: todo-list-item", () => {
       true
     );
 
-    await request(strapi.server)
+    const res = await request(strapi.server)
       .delete(`/my/todo-list-items/${mockTodolistEntity.id}`)
       .set("Content-type", "application/json")
       .set("Authorization", `Bearer ${authToken}`)
-      .expect(403)
-      .then(async (res) => {
-        expect(res.body.error).toBe("Forbidden");
-        expect(res.body.message).toBe("You're not Owner");
+      .expect(403);
 
-        const todolistItem = await strapi
-          .query("todo-list-item")
-          .findOne({ id: mockTodolistEntity.id });
-        console.log(todolistItem);
-        expect(todolistItem.id).toEqual(mockTodolistEntity.id);
-      });
+    expect(res.body.error).toBe("Forbidden");
+    expect(res.body.message).toBe("You're not Owner");
+
+    const todolistItem = await strapi
+      .query("todo-list-item")
+      .findOne({ id: mockTodolistEntity.id });
+    console.log(todolistItem);
+    expect(todolistItem).not.toEqual(null);
 
     await grantPrivilege(
       1,
