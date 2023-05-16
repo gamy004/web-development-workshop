@@ -1,0 +1,92 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/todo-list-items",
+      "handler": "todo-list-item.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/todo-list-items/count",
+      "handler": "todo-list-item.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/todo-list-items/:id",
+      "handler": "todo-list-item.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/todo-list-items",
+      "handler": "todo-list-item.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/todo-list-items/:id",
+      "handler": "todo-list-item.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/todo-list-items/:id",
+      "handler": "todo-list-item.delete",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/my/todo-list-items",
+      "handler": "todo-list-item.findMyTodoListItem",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/my/todo-list-items",
+      "handler": "todo-list-item.createMyTodoListItem",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/v2/my/todo-list-items",
+      "handler": "todo-list-item.createMyTodoListItemV2",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/my/todo-list-items/:id",
+      "handler": "todo-list-item.updateMyTodoListItem",
+      "config": {
+        "policies": ["isOwner"]
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/my/todo-list-items/:id",
+      "handler": "todo-list-item.deleteMyTodoListItem",
+      "config": {
+        "policies": ["isOwner"]
+      }
+    }
+  ]
+}
