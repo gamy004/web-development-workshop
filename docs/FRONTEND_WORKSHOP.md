@@ -80,6 +80,18 @@ In this chapter we will tackle how to create various components on the newly set
 - Hint 1: VuexORMAxios has an extension to include API calling in VuexORM model via `Custom Actions`. You can check it [here](https://vuex-orm.github.io/plugin-axios/guide/custom-actions.html#when-to-use-custom-actions).
 - Hint 2: When Strapi response login API, it will include `jwt` field and `user` field. By default, VuexORM will saved response from API into the store. If you want to do something before saving, you can add option `{ save: false }` to prevent default saving process and maunally insert the data or you can use `dataTransformer` to transform the data earlier. You can check it [here](https://vuex-orm.github.io/plugin-axios/guide/usage.html#handling-responses).
 
+## Adding validation to login form
+
+Use these criteria to create validation rule. The warning message should display only one invalid validation.
+- email input must not empty, otherwise display warning message "email is required".
+- email must be an valid email, otherwise display warning message "email is invalid".
+- password must not empty, otherwise display warning message "password is required".
+- password must be longer than 6 characters, otherwise display warning message "password must be more than 6 characters"
+
+- Hint 1: use `state` prop of `<b-input>` or `<b-input-group>` to control the invalid state of input.
+- Hint 2: use `<b-form-valid-feedback>` to display warning message. You can check it [here](https://bootstrap-vue.org/docs/components/form-group#invalid-feedback).
+- Hint 3: use Vuelidate to setup the validation rule. You can check it [here](https://vuelidate.js.org/#sub-basic-form)
+
 ## Display basic user information to `about-page.vue` page
 
 - Add a `GET` method to `/uses/me` which will be get a user based on `Authorization` header in `User` model API
