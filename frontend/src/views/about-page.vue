@@ -2,10 +2,9 @@
 	<div id="home-page" class="card mt-3">
 		<div class="card-body">
 			<div class="header">
-				<font-awesome-icon icon="fa-solid fa-house" class="icon" />
+				<font-awesome-icon icon="fa-solid fa-info" class="icon" />
 				<span class="page-name">{{ pageName }}</span>
 			</div>
-
 			<ul class="nav">
 				<li class="nav-item">
 					<b-link class="nav-link" :to="{ name: navigations.home.name }">{{ navigations.home.text }}</b-link>
@@ -22,7 +21,7 @@
 export default {
 	data() {
 		return {
-			pageName: "Home",
+			pageName: "About",
 			navigations: {
 				home: {
 					name: "home",
