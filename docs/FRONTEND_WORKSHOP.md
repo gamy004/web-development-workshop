@@ -124,7 +124,7 @@ Use these criteria to create validation rule. The warning message should display
 
 ## Add a new page: todo-list
 
-## Add ability to create, edit and delete todo list items
+## Add ability to create, edit and delete todo list items including validation
 
 ## Build a table to display user's todo list
 
