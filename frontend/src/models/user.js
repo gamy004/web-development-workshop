@@ -1,38 +1,20 @@
-import { Model } from "@vuex-orm/core"
-
-export class User extends Model {
-    static entity = 'users';
-    static fields = () => {
-        return {
-            id: this.attr(null),
-            username: this.string(null),
-            password: this.string(null),
-            email: this.string(null),
-            comfirmed: this.boolean(false),
-        }
-    }
-
-    static signIn = (identifier, password) => {
-        return this.api().post(`/auth/local`, { identifier, password })
-            .then(res => {
-                let accessToken = res.response.data.jwt;
-                if (accessToken) localStorage.setItem('userAccessToken', accessToken);
-
-                let userInfo = res.response.data.user;
-                if (userInfo) localStorage.setItem('userInfo', JSON.stringify(userInfo));
-
-                return {
-                    accessToken,
-                    userInfo
-                };
-            });
-    }
-
-    static getAccessToken = () => localStorage.getItem('userAccessToken');
-    static getUserInfo = () => {
-        let userInfoJsonStr = localStorage.getItem('userInfo');
-        if (userInfoJsonStr) return JSON.parse(userInfoJsonStr);
-    }
+export class User {
+	constructor(args) {
+		this.id = args.id ?? null;
+		this.username = args.username ?? null;
+		this.email = args.email ?? null;
+		this.provider = args.provider ?? null;
+		this.role = {
+			id: args.role.id ?? null,
+			name: args.role.name ?? null,
+			type: args.role.type ?? null,
+			description: args.role.description ?? null,
+		};
+		this.confirmed = args.confirmed ?? null;
+		this.blocked = args.blocked ?? null;
+		this.createdAt = args.created_at ?? null;
+		this.updatedAt = args.updated_at ?? null;
+	}
 }
 
 export default User;

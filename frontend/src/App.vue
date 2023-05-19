@@ -34,6 +34,7 @@
 <script>
 import TitleLocation from "./components/TitleLocation";
 import NavBar from "./components/NavBar";
+import { mapActions } from "vuex";
 
 export default {
 	name: "App",
@@ -41,6 +42,14 @@ export default {
 	components: {
 		TitleLocation,
 		NavBar,
+	},
+	async created() {
+		await this.init();
+	},
+	methods: {
+		...mapActions({
+			init: "authentication/init",
+		}),
 	},
 };
 </script>

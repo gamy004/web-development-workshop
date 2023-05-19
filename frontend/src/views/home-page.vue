@@ -16,18 +16,25 @@
 			</ul>
 
 			<div class="row">
-				<b-form class="col-4" v-if="true" @submit="onSignIn">
-					<b-form-group id="email" label="Email address" label-for="email">
-						<b-form-input id="email" v-model="user.email" type="email" placeholder="Your email" required></b-form-input>
+				<b-form class="col-4" v-if="!isAuthenticated" @submit.prevent="onSignIn">
+					<b-form-group id="email" label="Email" label-for="email">
+						<b-form-input id="email" v-model="authenticationForm.email" type="text" placeholder="Your email"></b-form-input>
 					</b-form-group>
 
 					<b-form-group id="password" label="Password" label-for="password">
-						<b-form-input id="password" v-model="user.password" type="password" required></b-form-input>
+						<b-form-input id="password" v-model="authenticationForm.password" type="password"></b-form-input>
 					</b-form-group>
 
+					<b-form-invalid-feedback :state="!(errorMessages.length > 0)" v-for="(errorMessage, index) in errorMessages" :key="'errror-' + index">
+						{{ errorMessage }}
+					</b-form-invalid-feedback>
+
 					<div class="d-flex flex-row justify-content-end">
-						<button class="btn btn-primary">Sign In</button>
+						<button type="submit" class="btn btn-primary">Sign In</button>
 					</div>
+				</b-form>
+				<b-form class="col-4" v-else @submit.prevent="onSignOut">
+					<button type="submit" class="btn btn-danger">Sign Out</button>
 				</b-form>
 			</div>
 		</div>
@@ -35,7 +42,9 @@
 </template>
 
 <script>
-import User from '@/models/user';
+import { mapActions } from "vuex";
+import { required, email } from "vuelidate/lib/validators";
+import { mapGetters } from "vuex";
 
 export default {
 	data() {
@@ -51,16 +60,62 @@ export default {
 					text: "About",
 				},
 			},
-			user: new User()
+			authenticationForm: {
+				email: null,
+				password: null,
+			},
+			errorMessages: [],
 		};
 	},
+	validations() {
+		return {
+			authenticationForm: {
+				email: { required, email },
+				password: { required },
+			},
+		};
+	},
+	computed: {
+		...mapGetters({
+			isAuthenticated: "authentication/isAuthenticated",
+		}),
+	},
 	methods: {
-		async onSignIn(event) {
-			event.preventDefault();
-			const res = await User.signIn(this.user.email, this.user.password);
-			console.log(res);
-		}
-	}
+		...mapActions({
+			signIn: "authentication/signIn",
+			signOut: "authentication/signOut",
+		}),
+		async onSignIn() {
+			this.$v.authenticationForm.$reset();
+			this.errorMessages = [];
+
+			this.$v.authenticationForm.$touch();
+			if (!this.$v.authenticationForm.email.required) {
+				this.errorMessages.push(`Email is required.`);
+			}
+			if (!this.$v.authenticationForm.email.email) {
+				this.errorMessages.push(`Email format invalid.`);
+			}
+			if (!this.$v.authenticationForm.password.required) {
+				this.errorMessages.push(`Password is required.`);
+			}
+
+			if (this.$v.authenticationForm.$invalid) return;
+
+			await this.signIn({
+				email: this.authenticationForm.email,
+				password: this.authenticationForm.password,
+			}).catch((e) => {
+				this.errorMessages = this.errorMessages.concat(e.errorMessages);
+			});
+		},
+		onSignOut() {
+			this.signOut();
+			this.authenticationForm.email = null;
+			this.authenticationForm.password = null;
+			this.$v.authenticationForm.$reset();
+		},
+	},
 };
 </script>
 
@@ -73,11 +128,11 @@ export default {
 	padding: 0.5rem 0.25rem;
 }
 
-.header>.icon {
+.header > .icon {
 	font-size: 2rem;
 }
 
-.header>.page-name {
+.header > .page-name {
 	font-size: 2rem;
 }
 
