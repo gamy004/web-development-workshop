@@ -5,10 +5,10 @@ export class User {
 		this.email = args.email ?? null;
 		this.provider = args.provider ?? null;
 		this.role = {
-			id: args.role.id ?? null,
-			name: args.role.name ?? null,
-			type: args.role.type ?? null,
-			description: args.role.description ?? null,
+			id: args.role?.id ?? null,
+			name: args.role?.name ?? null,
+			type: args.role?.type ?? null,
+			description: args.role?.description ?? null,
 		};
 		this.confirmed = args.confirmed ?? null;
 		this.blocked = args.blocked ?? null;

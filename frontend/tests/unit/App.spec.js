@@ -1,12 +1,27 @@
 import { mount } from "@vue/test-utils";
 import { router, localVue } from "../bootstrap";
+import Vuex from "vuex";
 import App from "../../src/App.vue";
 
 describe("App.vue", () => {
-	let methods = {};
+	let actions;
+	let store;
 
 	beforeEach(() => {
-		methods.init = jest.spyOn(App.methods, "init").mockResolvedValueOnce();
+		jest.clearAllMocks();
+
+		actions = {
+			init: jest.fn().mockResolvedValueOnce(),
+		};
+
+		store = new Vuex.Store({
+			modules: {
+				authentication: {
+					actions,
+					namespaced: true,
+				},
+			},
+		});
 	});
 
 	it("renders props.msg when passed", () => {
@@ -15,6 +30,7 @@ describe("App.vue", () => {
 		const wrapper = mount(App, {
 			router,
 			localVue,
+			store,
 		});
 
 		const cardWelcome = wrapper.findComponent({ ref: "card__welcome" });
@@ -26,8 +42,9 @@ describe("App.vue", () => {
 		mount(App, {
 			router,
 			localVue,
+			store,
 		});
 
-		expect(methods.init).toHaveBeenCalled();
+		expect(actions.init).toHaveBeenCalled();
 	});
 });

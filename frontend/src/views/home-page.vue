@@ -16,7 +16,7 @@
 			</ul>
 
 			<div class="row">
-				<b-form class="col-4" v-if="!isAuthenticated" @submit.prevent="onSignIn">
+				<b-form class="col-4 sign-in-form" ref="signInForm" v-if="!isAuthenticated" @submit.prevent="onSignIn">
 					<b-form-group id="email" label="Email" label-for="email">
 						<b-form-input id="email" v-model="authenticationForm.email" type="text" placeholder="Your email"></b-form-input>
 					</b-form-group>
@@ -25,15 +25,17 @@
 						<b-form-input id="password" v-model="authenticationForm.password" type="password"></b-form-input>
 					</b-form-group>
 
-					<b-form-invalid-feedback :state="!(errorMessages.length > 0)" v-for="(errorMessage, index) in errorMessages" :key="'errror-' + index">
-						{{ errorMessage }}
-					</b-form-invalid-feedback>
+					<div class="error-container" ref="errorContainer" v-if="errorMessages.length > 0">
+						<b-form-invalid-feedback :state="!(errorMessages.length > 0)" v-for="(errorMessage, index) in errorMessages" :key="'errror-' + index">
+							{{ errorMessage }}
+						</b-form-invalid-feedback>
+					</div>
 
 					<div class="d-flex flex-row justify-content-end">
 						<button type="submit" class="btn btn-primary">Sign In</button>
 					</div>
 				</b-form>
-				<b-form class="col-4" v-else @submit.prevent="onSignOut">
+				<b-form class="col-4 sign-out-form" ref="signOutForm" v-else @submit.prevent="onSignOut">
 					<button type="submit" class="btn btn-danger">Sign Out</button>
 				</b-form>
 			</div>
@@ -105,15 +107,21 @@ export default {
 			await this.signIn({
 				email: this.authenticationForm.email,
 				password: this.authenticationForm.password,
-			}).catch((e) => {
-				this.errorMessages = this.errorMessages.concat(e.errorMessages);
-			});
+			})
+				.then(() => {
+					this.authenticationForm.email = null;
+					this.authenticationForm.password = null;
+				})
+				.catch((e) => {
+					this.errorMessages = this.errorMessages.concat(e.errorMessages);
+				});
 		},
 		onSignOut() {
 			this.signOut();
 			this.authenticationForm.email = null;
 			this.authenticationForm.password = null;
 			this.$v.authenticationForm.$reset();
+			this.errorMessages = [];
 		},
 	},
 };
