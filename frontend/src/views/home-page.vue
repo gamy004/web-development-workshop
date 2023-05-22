@@ -111,6 +111,10 @@ export default {
 				.then(() => {
 					this.authenticationForm.email = null;
 					this.authenticationForm.password = null;
+					// this.$router.replace({
+					// 	name: "about",
+					// });
+					this.$router.push("about");
 				})
 				.catch((e) => {
 					this.errorMessages = this.errorMessages.concat(e.message);

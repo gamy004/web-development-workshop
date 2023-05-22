@@ -118,24 +118,36 @@ describe("Authentication Module: Actions", () => {
 			jest.clearAllMocks();
 		});
 
-		it("should work properly when userInfo request resolved.", async () => {
+		it("should work properly when userInfo request resolved with data.", async () => {
 			let mockUserInfo = {
 				data: {
 					email: "test@mail.com",
 				},
 			};
 			let userInfoRequest = jest.spyOn(state.axios, "get").mockResolvedValueOnce(mockUserInfo);
-
 			state.accessToken = "accessToken";
+
 			await expect(actions.loadUserInfo({ commit, state })).resolves.toBeUndefined();
 			expect(userInfoRequest).toHaveBeenCalled();
 			expect(commit).toHaveBeenCalledWith("setUser", new User(mockUserInfo.data));
 		});
 
+		it("should work properly when userInfo request resolved with no data.", async () => {
+			let mockUserInfo = {
+				data: null,
+			};
+			let userInfoRequest = jest.spyOn(state.axios, "get").mockResolvedValueOnce(mockUserInfo);
+			state.accessToken = "accessToken";
+
+			await expect(actions.loadUserInfo({ commit, state })).resolves.toBeUndefined();
+			expect(userInfoRequest).toHaveBeenCalled();
+			expect(commit).not.toHaveBeenCalledWith("setUser", new User(mockUserInfo.data));
+		});
+
 		it("should work properly when userInfo request rejected.", async () => {
 			let userInfoRequest = jest.spyOn(state.axios, "get").mockRejectedValue();
-
 			state.accessToken = "accessToken";
+
 			await expect(actions.loadUserInfo({ commit, state })).resolves.toBeUndefined();
 			expect(userInfoRequest).toHaveBeenCalled();
 			expect(commit).toHaveBeenCalledWith("clear");
@@ -160,7 +172,7 @@ describe("Authentication Module: Actions", () => {
 			jest.clearAllMocks();
 		});
 
-		it("should sign in successfully.", async () => {
+		it("should sign in successfully with data.", async () => {
 			let mockResponse = {
 				data: {
 					user: {
@@ -174,6 +186,17 @@ describe("Authentication Module: Actions", () => {
 			expect(signInRequest).toHaveBeenCalled();
 			expect(commit).toHaveBeenCalledWith("setUser", new User(mockResponse.data.user));
 			expect(commit).toHaveBeenCalledWith("setAccessToken", mockResponse.data.jwt);
+		});
+
+		it("should sign in successfully with no data.", async () => {
+			let mockResponse = {
+				data: null,
+			};
+			let signInRequest = jest.spyOn(state.axios, "post").mockResolvedValueOnce(mockResponse);
+			await expect(actions.signIn({ commit, state }, { email: "email", password: "password" })).resolves.toBeUndefined();
+			expect(signInRequest).toHaveBeenCalled();
+			expect(commit).not.toHaveBeenCalledWith("setUser", new User(mockResponse.data?.user));
+			expect(commit).not.toHaveBeenCalledWith("setAccessToken", mockResponse.data?.jwt);
 		});
 
 		it("should throw error when rejected from sign in request.", async () => {

@@ -13,11 +13,36 @@
 					<b-link class="nav-link" :to="{ name: navigations.about.name }">{{ navigations.about.text }}</b-link>
 				</li>
 			</ul>
+			<div ref="userInfo" v-if="isAuthenticated">
+				<b-card :title="title" :sub-title="subTitle">
+					<b-card-body>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+								<span><b>ID: </b>{{ currentUser.id }}</span>
+							</li>
+							<li class="list-group-item">
+								<span><b>Username: </b>{{ currentUser.username }}</span>
+							</li>
+							<li class="list-group-item">
+								<span><b>Email: </b>{{ currentUser.email }}</span>
+							</li>
+							<li class="list-group-item">
+								<span><b>Provider: </b>{{ currentUser.provider }}</span>
+							</li>
+							<li class="list-group-item">
+								<span><b>Role: </b>{{ currentUser.role.name }}</span>
+							</li>
+						</ul>
+					</b-card-body>
+				</b-card>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
 	data() {
 		return {
@@ -32,7 +57,15 @@ export default {
 					text: "About",
 				},
 			},
+			title: "About me",
+			subTitle: "My account information",
 		};
+	},
+	computed: {
+		...mapGetters({
+			isAuthenticated: "authentication/isAuthenticated",
+			currentUser: "authentication/currentUser",
+		}),
 	},
 };
 </script>

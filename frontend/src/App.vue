@@ -38,7 +38,6 @@ import { mapActions } from "vuex";
 
 export default {
 	name: "App",
-
 	components: {
 		TitleLocation,
 		NavBar,

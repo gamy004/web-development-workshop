@@ -50,8 +50,8 @@ const actions = {
 				password: authentication.password,
 			})
 			.then((response) => {
-				if (response.data.user) commit("setUser", new User(response.data.user));
-				if (response.data.jwt) commit("setAccessToken", response.data.jwt);
+				if (response.data?.user) commit("setUser", new User(response.data.user));
+				if (response.data?.jwt) commit("setAccessToken", response.data.jwt);
 			})
 			.catch(() => {
 				throw new Error("Authentication failed.");
