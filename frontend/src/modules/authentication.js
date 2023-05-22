@@ -19,12 +19,14 @@ const actions = {
 		let cacheAccessToken = localStorage.getItem("accessToken");
 		if (cacheAccessToken) {
 			commit("setAccessToken", cacheAccessToken);
-			return await dispatch("loadUserInfo");
+			return await dispatch("loadUserInfo").catch(() => {
+				commit("clear");
+			});
 		}
 		return Promise.resolve();
 	},
 	loadUserInfo: async ({ commit, state }) => {
-		if (!state.accessToken) Promise.reject(new Error(`accessToken not found.`));
+		if (!state.accessToken) throw new Error(`accessToken not found.`);
 
 		const headers = {
 			Authorization: `Bearer ${state.accessToken}`,
@@ -36,6 +38,9 @@ const actions = {
 			})
 			.then((response) => {
 				if (response.data) commit("setUser", new User(response.data));
+			})
+			.catch(() => {
+				commit("clear");
 			});
 	},
 	signIn: async ({ commit, state }, authentication) => {
@@ -48,13 +53,8 @@ const actions = {
 				if (response.data.user) commit("setUser", new User(response.data.user));
 				if (response.data.jwt) commit("setAccessToken", response.data.jwt);
 			})
-			.catch((e) => {
-				var exception = new Error(e.response.statusText);
-				exception.errorMessages = [];
-				e.response.data.message.forEach((m) => {
-					exception.errorMessages = exception.errorMessages.concat(m.messages.map((inner) => inner.message));
-				});
-				throw exception;
+			.catch(() => {
+				throw new Error("Authentication failed.");
 			});
 	},
 	signOut: ({ commit }) => {

@@ -113,7 +113,7 @@ export default {
 					this.authenticationForm.password = null;
 				})
 				.catch((e) => {
-					this.errorMessages = this.errorMessages.concat(e.errorMessages);
+					this.errorMessages = this.errorMessages.concat(e.message);
 				});
 		},
 		onSignOut() {
