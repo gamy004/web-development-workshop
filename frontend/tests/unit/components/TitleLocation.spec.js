@@ -11,7 +11,7 @@ describe("TitleLocation.vue", () => {
         jest.clearAllMocks();
     })
 
-    it("should display current location", async () => {
+    it("should display correct location when component mounted", async () => {
         await router.push("/mock-route");
 
         const wrapper = shallowMount(TitleLocation, {
@@ -24,9 +24,10 @@ describe("TitleLocation.vue", () => {
         expect(textLocation).toBeDefined();
 
         expect(textLocation.text()).toBe(`${window.location.origin}/mock-route`);
+        expect(wrapper.vm.currentLocation).toBe(`${window.location.origin}/mock-route`);
     });
 
-    it("should display correct location when route change", async () => {
+    it("should display correct location when route changed", async () => {
         const wrapper = shallowMount(TitleLocation, {
             router,
             localVue
@@ -39,6 +40,7 @@ describe("TitleLocation.vue", () => {
         expect(textLocation).toBeDefined();
 
         expect(textLocation.text()).toBe(`${window.location.origin}/mock-route-2`);
+        expect(wrapper.vm.currentLocation).toBe(`${window.location.origin}/mock-route-2`);
 
     });
 });
