@@ -3,7 +3,7 @@
 		<nav-bar />
 
 		<b-container fluid>
-			<b-row id="homePage" align-h="center" align-v="center">
+			<b-row id="homePage" align-h="center" align-v="center" class="mt-3">
 				<b-col>
 					<b-card ref="card__welcome" title="Welcome to Learn4Life Workshop!!">
 						<b-card-text>
@@ -34,21 +34,12 @@
 <script>
 import TitleLocation from "./components/TitleLocation";
 import NavBar from "./components/NavBar";
-import { mapActions } from "vuex";
 
 export default {
 	name: "App",
 	components: {
 		TitleLocation,
 		NavBar,
-	},
-	async created() {
-		await this.init();
-	},
-	methods: {
-		...mapActions({
-			init: "authentication/init",
-		}),
 	},
 };
 </script>

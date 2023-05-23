@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import { router, localVue } from "../../bootstrap";
+import { router, createLocalVueInstance } from "../../bootstrap";
 import flushPromises from "flush-promises";
 import Vuex from "vuex";
 import HomePage from "@/views/home-page.vue";
@@ -7,33 +7,28 @@ import Authentication from "@/modules/authentication";
 import User from "@/models/user";
 
 describe("Home Page", () => {
-	let actions;
-	let state;
-	let store;
+	const localVue = createLocalVueInstance();
+	const state = {
+		user: null,
+		accessToken: null,
+	};
+	const actions = {
+		signIn: jest.fn().mockResolvedValueOnce(),
+		signOut: jest.fn(),
+	};
+	const store = new Vuex.Store({
+		modules: {
+			authentication: {
+				state,
+				actions,
+				getters: Authentication.getters,
+				namespaced: true,
+			},
+		},
+	});
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-
-		state = {
-			user: null,
-			accessToken: null,
-		};
-
-		actions = {
-			signIn: jest.fn().mockResolvedValueOnce(),
-			signOut: jest.fn(),
-		};
-
-		store = new Vuex.Store({
-			modules: {
-				authentication: {
-					state,
-					actions,
-					getters: Authentication.getters,
-					namespaced: true,
-				},
-			},
-		});
 	});
 
 	afterAll(() => {
@@ -49,11 +44,6 @@ describe("Home Page", () => {
 
 		const pageName = wrapper.find(".page-name");
 		expect(pageName.text()).toBe("Home");
-
-		const homeNav = wrapper.findAll(".nav-link").at(0);
-		expect(homeNav.text()).toBe("Home");
-		const aboutNav = wrapper.findAll(".nav-link").at(1);
-		expect(aboutNav.text()).toBe("About");
 
 		var signInForm = wrapper.findComponent({
 			ref: "signInForm",
@@ -82,11 +72,6 @@ describe("Home Page", () => {
 
 		const pageName = wrapper.find(".page-name");
 		expect(pageName.text()).toBe("Home");
-
-		const homeNav = wrapper.findAll(".nav-link").at(0);
-		expect(homeNav.text()).toBe("Home");
-		const aboutNav = wrapper.findAll(".nav-link").at(1);
-		expect(aboutNav.text()).toBe("About");
 
 		var signInForm = wrapper.findComponent({
 			ref: "signInForm",

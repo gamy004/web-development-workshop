@@ -1,38 +1,35 @@
 import { shallowMount } from "@vue/test-utils";
-import { router, localVue } from "../../bootstrap";
+import { router, createLocalVueInstance } from "../../bootstrap";
 import Vuex from "vuex";
 import AboutPage from "@/views/about-page.vue";
 import Authentication from "@/modules/authentication";
 import User from "@/models/user";
 
 describe("About Page", () => {
-	let state;
-	let store;
+	const localVue = createLocalVueInstance();
+	const state = {
+		user: null,
+		accessToken: null,
+	};
+	const store = new Vuex.Store({
+		modules: {
+			authentication: {
+				state,
+				getters: Authentication.getters,
+				namespaced: true,
+			},
+		},
+	});
 
 	beforeEach(() => {
 		jest.clearAllMocks();
-
-		state = {
-			user: null,
-			accessToken: null,
-		};
-
-		store = new Vuex.Store({
-			modules: {
-				authentication: {
-					state,
-					getters: Authentication.getters,
-					namespaced: true,
-				},
-			},
-		});
 	});
 
 	afterAll(() => {
 		jest.clearAllMocks();
 	});
 
-	it("should display content correctly with user", () => {
+	it("should display content correctly when authenticated", () => {
 		state.user = new User({ id: 1, username: "test", email: "test@mail.com" });
 		state.accessToken = "token";
 
@@ -45,11 +42,6 @@ describe("About Page", () => {
 		const pageName = wrapper.find(".page-name");
 		expect(pageName.text()).toBe("About");
 
-		const homeNav = wrapper.findAll(".nav-link").at(0);
-		expect(homeNav.text()).toBe("Home");
-		const aboutNav = wrapper.findAll(".nav-link").at(1);
-		expect(aboutNav.text()).toBe("About");
-
 		var userInfo = wrapper.findComponent({
 			ref: "userInfo",
 		});
@@ -60,7 +52,7 @@ describe("About Page", () => {
 		expect(wrapper.vm.currentUser.email).toBe("test@mail.com");
 	});
 
-	it("should display content correctly with no user", () => {
+	it("should display content correctly when not authenticated", () => {
 		state.user = null;
 		state.accessToken = null;
 

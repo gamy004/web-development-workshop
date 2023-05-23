@@ -1,20 +1,16 @@
 <template>
-	<b-card title="Current Location" class="card__title-location">
+	<b-card ref="locationCard" title="Current Location" class="card__title-location">
 		<b-card-text class="text__title">{{ currentLocation }}</b-card-text>
 	</b-card>
 </template>
 
 <script>
 export default {
-	data() {
-		return {};
-	},
 	computed: {
 		currentLocation() {
 			return `${window.location.origin}${this.$route.path}`;
 		},
 	},
-	methods: {},
 };
 </script>
 

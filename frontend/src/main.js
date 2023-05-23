@@ -9,8 +9,14 @@ import App from "./App.vue";
 Vue.use(Vuelidate);
 Vue.use(BootstrapVue);
 
-new Vue({
-  store,
-  router,
-  render: (h) => h(App),
-}).$mount("#app");
+async function initialize() {
+	return await Promise.all([store.dispatch("authentication/init")]);
+}
+
+initialize().then(() => {
+	new Vue({
+		store,
+		router,
+		render: (h) => h(App),
+	}).$mount("#app");
+});

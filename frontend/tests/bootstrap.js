@@ -5,18 +5,19 @@ import Vuelidate from "vuelidate";
 import BootstrapVue from "bootstrap-vue";
 import Vuex from "vuex";
 
-const localVue = createLocalVue();
-
-localVue.use(BootstrapVue);
-
-localVue.use(VueRouter);
-
-localVue.use(Vuelidate);
-
-localVue.use(Vuex);
-
 const router = new VueRouter();
 
-localVue.component("font-awesome-icon", FontAwesomeIcon);
+const createLocalVueInstance = (useVueRouter = true) => {
+	const localVue = createLocalVue();
 
-export { router, localVue };
+	localVue.use(BootstrapVue);
+	if (useVueRouter) {
+		localVue.use(VueRouter);
+	}
+	localVue.use(Vuelidate);
+	localVue.use(Vuex);
+	localVue.component("font-awesome-icon", FontAwesomeIcon);
+	return localVue;
+};
+
+export { router, createLocalVueInstance };

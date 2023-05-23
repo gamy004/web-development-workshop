@@ -6,17 +6,8 @@
 				<span class="page-name">{{ pageName }}</span>
 			</div>
 
-			<ul class="nav">
-				<li class="nav-item">
-					<b-link class="nav-link" :to="{ name: navigations.home.name }">{{ navigations.home.text }}</b-link>
-				</li>
-				<li class="nav-item">
-					<b-link class="nav-link" :to="{ name: navigations.about.name }">{{ navigations.about.text }}</b-link>
-				</li>
-			</ul>
-
 			<div class="row">
-				<b-form class="col-4 sign-in-form" ref="signInForm" v-if="!isAuthenticated" @submit.prevent="onSignIn">
+				<b-form class="col-md-4 mx-auto sign-in-form" ref="signInForm" v-if="!isAuthenticated" @submit.prevent="onSignIn">
 					<b-form-group id="email" label="Email" label-for="email">
 						<b-form-input id="email" v-model="authenticationForm.email" type="text" placeholder="Your email"></b-form-input>
 					</b-form-group>
@@ -44,24 +35,13 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import { required, email } from "vuelidate/lib/validators";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
 	data() {
 		return {
 			pageName: "Home",
-			navigations: {
-				home: {
-					name: "home",
-					text: "Home",
-				},
-				about: {
-					name: "about",
-					text: "About",
-				},
-			},
 			authenticationForm: {
 				email: null,
 				password: null,
@@ -111,9 +91,6 @@ export default {
 				.then(() => {
 					this.authenticationForm.email = null;
 					this.authenticationForm.password = null;
-					// this.$router.replace({
-					// 	name: "about",
-					// });
 					this.$router.push("about");
 				})
 				.catch((e) => {
@@ -146,9 +123,5 @@ export default {
 
 .header > .page-name {
 	font-size: 2rem;
-}
-
-.nav-link {
-	font-size: 1.25rem;
 }
 </style>
