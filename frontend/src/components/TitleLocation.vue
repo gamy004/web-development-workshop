@@ -1,17 +1,17 @@
 <template>
   <b-card title="Current Location" class="card__title-location">
-    <b-card-text class="text__title"></b-card-text>
+    <b-card-text class="text__location" ref="text__location">{{ currentLocation }}</b-card-text>
   </b-card>
 </template>
 s
 
 <script>
 export default {
-  data() {
-    return {
-      location: "CHANGE ME!!!",
-    };
-  },
+  computed: {
+    currentLocation() {
+      return `${window.location.origin}${this.$route.fullPath}`
+    }
+  }
 };
 </script>
 

@@ -3,6 +3,14 @@ import { router, localVue } from "../bootstrap";
 import App from "../../src/App.vue";
 
 describe("App.vue", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  })
+
+  afterAll(() => {
+    jest.clearAllMocks();
+  })
+
   it("renders props.msg when passed", () => {
     const title = `Welcome to Learn4Life Workshop!!`;
 
