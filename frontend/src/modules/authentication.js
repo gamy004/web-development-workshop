@@ -1,5 +1,5 @@
 import axios from "axios";
-import User from "./../models/user";
+import AuthUser from "../models/AuthUser";
 
 const state = {
 	user: null,
@@ -37,7 +37,7 @@ const actions = {
 				headers,
 			})
 			.then((response) => {
-				if (response.data) commit("setUser", new User(response.data));
+				if (response.data) commit("setUser", new AuthUser(response.data));
 			})
 			.catch(() => {
 				commit("clear");
@@ -50,7 +50,7 @@ const actions = {
 				password: authentication.password,
 			})
 			.then((response) => {
-				if (response.data?.user) commit("setUser", new User(response.data.user));
+				if (response.data?.user) commit("setUser", new AuthUser(response.data.user));
 				if (response.data?.jwt) commit("setAccessToken", response.data.jwt);
 			})
 			.catch(() => {

@@ -4,7 +4,7 @@ import flushPromises from "flush-promises";
 import Vuex from "vuex";
 import HomePage from "@/views/home-page.vue";
 import Authentication from "@/modules/authentication";
-import User from "@/models/user";
+import AuthUser from "@/models/AuthUser";
 
 describe("Home Page", () => {
 	const localVue = createLocalVueInstance();
@@ -61,7 +61,7 @@ describe("Home Page", () => {
 	});
 
 	it("should display content correctly with cache", () => {
-		state.user = new User({ email: "test@mail.com" });
+		state.user = new AuthUser({ email: "test@mail.com" });
 		state.accessToken = "token";
 
 		const wrapper = shallowMount(HomePage, {
@@ -123,7 +123,7 @@ describe("Home Page", () => {
 		expect(wrapper.vm.$data.authenticationForm.email).toBeNull();
 		expect(wrapper.vm.$data.authenticationForm.password).toBeNull();
 
-		state.user = new User({ email: "test@mail.com" });
+		state.user = new AuthUser({ email: "test@mail.com" });
 		state.accessToken = "token";
 
 		await wrapper.vm.$nextTick();
@@ -140,7 +140,7 @@ describe("Home Page", () => {
 	});
 
 	it("should sign out correctly", async () => {
-		state.user = new User({ email: "test@mail.com" });
+		state.user = new AuthUser({ email: "test@mail.com" });
 		state.accessToken = "token";
 
 		const wrapper = shallowMount(HomePage, {

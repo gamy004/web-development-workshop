@@ -3,7 +3,7 @@ import { router, createLocalVueInstance } from "../../bootstrap";
 import Vuex from "vuex";
 import AboutPage from "@/views/about-page.vue";
 import Authentication from "@/modules/authentication";
-import User from "@/models/user";
+import AuthUser from "@/models/AuthUser";
 
 describe("About Page", () => {
 	const localVue = createLocalVueInstance();
@@ -30,7 +30,7 @@ describe("About Page", () => {
 	});
 
 	it("should display content correctly when authenticated", () => {
-		state.user = new User({ id: 1, username: "test", email: "test@mail.com" });
+		state.user = new AuthUser({ id: 1, username: "test", email: "test@mail.com" });
 		state.accessToken = "token";
 
 		const wrapper = shallowMount(AboutPage, {
@@ -84,7 +84,7 @@ describe("About Page", () => {
 
 		expect(userInfo.exists()).toBeFalsy();
 
-		state.user = new User({ id: 2, username: "test2", email: "test2@mail.com" });
+		state.user = new AuthUser({ id: 2, username: "test2", email: "test2@mail.com" });
 		state.accessToken = "token";
 
 		await wrapper.vm.$nextTick();

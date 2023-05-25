@@ -7,17 +7,35 @@
 			</div>
 
 			<div class="row">
-				<b-form class="col-md-4 mx-auto sign-in-form" ref="signInForm" v-if="!isAuthenticated" @submit.prevent="onSignIn">
+				<b-form
+					class="col-md-4 mx-auto sign-in-form"
+					ref="signInForm"
+					v-if="!isAuthenticated"
+					@submit.prevent="onSignIn"
+				>
 					<b-form-group id="email" label="Email" label-for="email">
-						<b-form-input id="email" v-model="authenticationForm.email" type="text" placeholder="Your email"></b-form-input>
+						<b-form-input
+							id="email"
+							v-model="authenticationForm.email"
+							type="text"
+							placeholder="Your email"
+						></b-form-input>
 					</b-form-group>
 
 					<b-form-group id="password" label="Password" label-for="password">
-						<b-form-input id="password" v-model="authenticationForm.password" type="password"></b-form-input>
+						<b-form-input
+							id="password"
+							v-model="authenticationForm.password"
+							type="password"
+						></b-form-input>
 					</b-form-group>
 
 					<div class="error-container" ref="errorContainer" v-if="errorMessages.length > 0">
-						<b-form-invalid-feedback :state="!(errorMessages.length > 0)" v-for="(errorMessage, index) in errorMessages" :key="'errror-' + index">
+						<b-form-invalid-feedback
+							:state="!(errorMessages.length > 0)"
+							v-for="(errorMessage, index) in errorMessages"
+							:key="'errror-' + index"
+						>
 							{{ errorMessage }}
 						</b-form-invalid-feedback>
 					</div>
@@ -118,7 +136,7 @@ export default {
 }
 
 .header > .icon {
-	font-size: 2rem;
+	font-size: 1.5rem;
 }
 
 .header > .page-name {

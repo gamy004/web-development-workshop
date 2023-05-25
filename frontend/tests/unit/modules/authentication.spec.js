@@ -1,4 +1,4 @@
-import User from "@/models/user";
+import AuthUser from "@/models/AuthUser";
 import AuthenticationModule from "@/modules/authentication";
 
 describe("Authentication Module: State", () => {
@@ -39,7 +39,7 @@ describe("Authentication Module: Getters", () => {
 		expect(getters.currentUser(state)).toBeNull();
 		expect(getters.accessToken(state)).toBeNull();
 
-		const mockUser = new User({ email: "test@mail.com" });
+		const mockUser = new AuthUser({ email: "test@mail.com" });
 		const mockAccessToken = "accessToken";
 		state.user = mockUser;
 		state.accessToken = mockAccessToken;
@@ -129,7 +129,7 @@ describe("Authentication Module: Actions", () => {
 
 			await expect(actions.loadUserInfo({ commit, state })).resolves.toBeUndefined();
 			expect(userInfoRequest).toHaveBeenCalled();
-			expect(commit).toHaveBeenCalledWith("setUser", new User(mockUserInfo.data));
+			expect(commit).toHaveBeenCalledWith("setUser", new AuthUser(mockUserInfo.data));
 		});
 
 		it("should work properly when userInfo request resolved with no data.", async () => {
@@ -141,7 +141,7 @@ describe("Authentication Module: Actions", () => {
 
 			await expect(actions.loadUserInfo({ commit, state })).resolves.toBeUndefined();
 			expect(userInfoRequest).toHaveBeenCalled();
-			expect(commit).not.toHaveBeenCalledWith("setUser", new User(mockUserInfo.data));
+			expect(commit).not.toHaveBeenCalledWith("setUser", new AuthUser(mockUserInfo.data));
 		});
 
 		it("should work properly when userInfo request rejected.", async () => {
@@ -182,9 +182,11 @@ describe("Authentication Module: Actions", () => {
 				},
 			};
 			let signInRequest = jest.spyOn(state.axios, "post").mockResolvedValueOnce(mockResponse);
-			await expect(actions.signIn({ commit, state }, { email: "email", password: "password" })).resolves.toBeUndefined();
+			await expect(
+				actions.signIn({ commit, state }, { email: "email", password: "password" })
+			).resolves.toBeUndefined();
 			expect(signInRequest).toHaveBeenCalled();
-			expect(commit).toHaveBeenCalledWith("setUser", new User(mockResponse.data.user));
+			expect(commit).toHaveBeenCalledWith("setUser", new AuthUser(mockResponse.data.user));
 			expect(commit).toHaveBeenCalledWith("setAccessToken", mockResponse.data.jwt);
 		});
 
@@ -193,9 +195,11 @@ describe("Authentication Module: Actions", () => {
 				data: null,
 			};
 			let signInRequest = jest.spyOn(state.axios, "post").mockResolvedValueOnce(mockResponse);
-			await expect(actions.signIn({ commit, state }, { email: "email", password: "password" })).resolves.toBeUndefined();
+			await expect(
+				actions.signIn({ commit, state }, { email: "email", password: "password" })
+			).resolves.toBeUndefined();
 			expect(signInRequest).toHaveBeenCalled();
-			expect(commit).not.toHaveBeenCalledWith("setUser", new User(mockResponse.data?.user));
+			expect(commit).not.toHaveBeenCalledWith("setUser", new AuthUser(mockResponse.data?.user));
 			expect(commit).not.toHaveBeenCalledWith("setAccessToken", mockResponse.data?.jwt);
 		});
 
@@ -203,7 +207,9 @@ describe("Authentication Module: Actions", () => {
 			let signInRequest = jest.spyOn(state.axios, "post").mockRejectedValue();
 			let expectedException = new Error("Authentication failed.");
 
-			await expect(actions.signIn({ commit, state }, { email: "email", password: "password" })).rejects.toThrow(expectedException);
+			await expect(actions.signIn({ commit, state }, { email: "email", password: "password" })).rejects.toThrow(
+				expectedException
+			);
 			expect(signInRequest).toHaveBeenCalled();
 		});
 	});
@@ -240,7 +246,7 @@ describe("Authentication Module: Mutations", () => {
 	});
 
 	it("should set user state", () => {
-		const mockUser = new User({ email: "test@mail.com" });
+		const mockUser = new AuthUser({ email: "test@mail.com" });
 
 		mutations.setUser(state, mockUser);
 		expect(state.user).toBe(mockUser);
@@ -259,7 +265,7 @@ describe("Authentication Module: Mutations", () => {
 	it("should clear state", () => {
 		let removeItem = jest.spyOn(Storage.prototype, "removeItem");
 
-		state.user = new User({ email: "test@mail.com" });
+		state.user = new AuthUser({ email: "test@mail.com" });
 		state.accessToken = "token";
 
 		mutations.clear(state);

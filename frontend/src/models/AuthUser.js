@@ -1,4 +1,4 @@
-export class User {
+export class AuthUser {
 	constructor(args) {
 		this.id = args?.id ?? null;
 		this.username = args?.username ?? null;
@@ -17,4 +17,4 @@ export class User {
 	}
 }
 
-export default User;
+export default AuthUser;

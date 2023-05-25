@@ -3,7 +3,7 @@ import { router, createLocalVueInstance } from "../../bootstrap";
 import Vuex from "vuex";
 import NavBar from "@/components/NavBar";
 import Authentication from "@/modules/authentication";
-import User from "@/models/user";
+import AuthUser from "@/models/AuthUser";
 import flushPromises from "flush-promises";
 
 describe("TitleLocation.vue: use VueRouter", () => {
@@ -64,7 +64,7 @@ describe("TitleLocation.vue: use VueRouter", () => {
 	});
 
 	it("should display navbar when authenticated.", () => {
-		state.user = new User({ id: 1, username: "test", email: "test@mail.com" });
+		state.user = new AuthUser({ id: 1, username: "test", email: "test@mail.com" });
 		state.accessToken = "token";
 
 		const wrapper = shallowMount(NavBar, {
@@ -182,7 +182,7 @@ describe("TitleLocation.vue: use mock router", () => {
 			push: jest.fn(),
 		};
 
-		state.user = new User({ email: "test@mail.com" });
+		state.user = new AuthUser({ email: "test@mail.com" });
 		state.accessToken = "token";
 
 		const wrapper = shallowMount(NavBar, {
@@ -208,7 +208,7 @@ describe("TitleLocation.vue: use mock router", () => {
 
 		expect(wrapper.vm.isAuthenticated).toBeFalsy();
 
-		state.user = new User({ email: "test@mail.com" });
+		state.user = new AuthUser({ email: "test@mail.com" });
 		state.accessToken = "token";
 		mockRoute.path = "/home";
 		mockRoute.name = "home";

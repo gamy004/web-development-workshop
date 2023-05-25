@@ -1,5 +1,5 @@
 <template>
-	<div id="home-page" class="card mt-3">
+	<div id="about-page" class="card mt-3">
 		<div class="card-body">
 			<div class="header">
 				<font-awesome-icon icon="fa-solid fa-info" class="icon" />
@@ -60,7 +60,7 @@ export default {
 }
 
 .header > .icon {
-	font-size: 2rem;
+	font-size: 1.5rem;
 }
 .header > .page-name {
 	font-size: 2rem;

@@ -5,6 +5,8 @@ import VuexORM from "@vuex-orm/core";
 import VuexORMAxios from "@vuex-orm/plugin-axios";
 
 import authentication from "./modules/authentication";
+import TodoList from "./models/TodoList";
+import User from "./models/User";
 
 Vue.use(Vuex);
 
@@ -16,6 +18,9 @@ VuexORM.use(VuexORMAxios, {
 		withCredentials: true,
 	}),
 });
+
+database.register(TodoList);
+database.register(User);
 
 const vuexORMPlugin = VuexORM.install(database);
 
