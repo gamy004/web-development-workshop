@@ -6,7 +6,7 @@ import Authentication from "@/modules/authentication";
 import AuthUser from "@/models/AuthUser";
 import flushPromises from "flush-promises";
 
-describe("TitleLocation.vue: use VueRouter", () => {
+describe("NavBar", () => {
 	const localVue = createLocalVueInstance();
 	const state = {
 		user: null,

@@ -26,14 +26,24 @@
 						</div>
 
 						<div class="todo-list-item__actions">
-							<b-button variant="outline-dark" pill @click="onEditClicked(todoListItem.id, todoListItem)">
+							<b-button
+								ref="editBtn"
+								variant="outline-dark"
+								pill
+								@click="onEditClicked(todoListItem.id, todoListItem)"
+							>
 								<span class="btn-wrapper--icon">
 									<font-awesome-icon icon="edit" />
 								</span>
 								<span class="btn-wrapper--label">{{ "Edit" }}</span>
 							</b-button>
 
-							<b-button variant="outline-danger" pill @click="onDeleteClicked(todoListItem.id)">
+							<b-button
+								ref="deleteBtn"
+								variant="outline-danger"
+								pill
+								@click="onDeleteClicked(todoListItem.id)"
+							>
 								<span class="btn-wrapper--icon">
 									<font-awesome-icon icon="trash" />
 								</span>

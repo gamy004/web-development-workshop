@@ -2,7 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import { createLocalVueInstance } from "../../bootstrap";
 import TitleLocation from "@/components/TitleLocation";
 
-describe("TitleLocation.vue", () => {
+describe("TitleLocation", () => {
 	const localVue = createLocalVueInstance(false);
 
 	beforeEach(() => {

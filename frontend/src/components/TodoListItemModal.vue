@@ -51,6 +51,7 @@
 		</b-modal>
 
 		<b-modal
+			ref="deleteTodoListItemModal"
 			title="Delete todo list item"
 			id="delete-todo-list-item-modal"
 			@ok="onConfirmDeleteHandler"
